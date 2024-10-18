@@ -39,6 +39,7 @@ public class CreateNewUserController : ControllerBase
             Email = user.Email,
             Password = user.Password,
             Role = "admin",
+            Phone = user.Phone
         };
 
         //add user
@@ -49,7 +50,7 @@ public class CreateNewUserController : ControllerBase
         var token = GenerateJwtToken(register);
 
         return Ok(new 
-            { user.UserName, user.Email,token }
+            { user.UserName, user.Email,user.Phone, token }
         );
     }
 

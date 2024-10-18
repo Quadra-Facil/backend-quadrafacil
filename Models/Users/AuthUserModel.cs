@@ -9,7 +9,7 @@ public class User
 
     [Required]
     [MaxLength(50)]
-    public string UserName { get; set; }
+    public string? UserName { get; set; }
 
     [Required]
     [EmailAddress]
@@ -19,6 +19,9 @@ public class User
     [Required]
     [MinLength(6)]
     public string? Password { get; set; }
+
+    [Phone]
+    public string? Phone { get; set; }
 
     [MaxLength(10)]
     public string? Role { get; set; }
