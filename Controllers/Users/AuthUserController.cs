@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using QuadraFacil_backend.API.Data;
 using QuadraFacil_backend.API.Models.Users;
-using System;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthUserController : ControllerBase
+public class AuthController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _configuration;
 
-    public AuthUserController(AppDbContext context, IConfiguration configuration)
+    public AuthController(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
@@ -24,14 +23,14 @@ public class AuthUserController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLogin login)
     {
-        var user = _context.Users.FirstOrDefault(u => u.Username == login.Username && u.Password == login.Password);
+        var user = _context.Users.FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password);
         if (user == null)
         {
             return Unauthorized();
         }
 
         var token = GenerateJwtToken(user);
-        return Ok(new { token });
+        return Ok(new { login.Email, token });
     }
 
     private string GenerateJwtToken(User user)
@@ -41,7 +40,7 @@ public class AuthUserController : ControllerBase
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
             new Claim(ClaimTypes.Role, user.Role),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
@@ -50,7 +49,7 @@ public class AuthUserController : ControllerBase
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
+            expires: DateTime.Now.AddDays(1),
             signingCredentials: credentials
         );
 
@@ -60,6 +59,10 @@ public class AuthUserController : ControllerBase
 
 public class UserLogin
 {
-    public string? Username { get; set; }
+    [Required]
+    [EmailAddress]
+    public string? Email { get; set; }
+
+    [Required]
     public string? Password { get; set; }
 }

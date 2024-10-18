@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "AuthUserController",
+    "ContainingType": "AuthController",
     "Method": "Login",
-    "RelativePath": "api/AuthUser/login",
+    "RelativePath": "api/Auth/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -16,24 +16,19 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "QuadraFacil_backend.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
+    "ContainingType": "QuadraFacil_backend.Controllers.Users.CreateNewUserController",
+    "Method": "Register",
+    "RelativePath": "api/CreateNewUser",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
+    "Parameters": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[QuadraFacil_backend.WeatherForecast, QuadraFacil-backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
+        "Name": "user",
+        "Type": "QuadraFacil_backend.API.Models.Users.User",
+        "IsRequired": true
       }
     ],
-    "EndpointName": "GetWeatherForecast"
+    "ReturnTypes": []
   }
 ]
