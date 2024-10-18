@@ -5,18 +5,17 @@ using QuadraFacil_backend.API.Data;
 using QuadraFacil_backend.API.Models.Users;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthUserController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _configuration;
 
-    public AuthController(AppDbContext context, IConfiguration configuration)
+    public AuthUserController(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;

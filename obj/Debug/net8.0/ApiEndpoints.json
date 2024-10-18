@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "AuthController",
+    "ContainingType": "AuthUserController",
     "Method": "Login",
-    "RelativePath": "api/Auth/login",
+    "RelativePath": "api/AuthUser/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
