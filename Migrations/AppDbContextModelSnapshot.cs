@@ -54,6 +54,91 @@ namespace QuadraFacil_backend.Migrations
 
                     b.ToTable("Users");
                 });
+
+            modelBuilder.Entity("QuadraFacil_backend.Models.Arena.AdressArena", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Neighborhood")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Number")
+                        .HasMaxLength(5)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArenaId");
+
+                    b.ToTable("AdressArenas");
+                });
+
+            modelBuilder.Entity("QuadraFacil_backend.Models.Arena.ArenaModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Arenas");
+                });
+
+            modelBuilder.Entity("QuadraFacil_backend.Models.Arena.AdressArena", b =>
+                {
+                    b.HasOne("QuadraFacil_backend.Models.Arena.ArenaModel", "Arena")
+                        .WithMany("AdressArenas")
+                        .HasForeignKey("ArenaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Arena");
+                });
+
+            modelBuilder.Entity("QuadraFacil_backend.Models.Arena.ArenaModel", b =>
+                {
+                    b.Navigation("AdressArenas");
+                });
 #pragma warning restore 612, 618
         }
     }
