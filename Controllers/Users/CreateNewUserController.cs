@@ -8,11 +8,10 @@ using System.Text;
 
 namespace QuadraFacil_backend.Controllers.Users;
 
-[Route("api/[controller]")] // Define a rota para este controller
+[Route("api/user")] // Define a rota para este controller
 [ApiController] // Informa que este controller é uma API
 public class CreateNewUserController : ControllerBase
 {
-
     private readonly AppDbContext _appDbContext;
     private readonly IConfiguration _configuration;
 
@@ -46,15 +45,13 @@ public class CreateNewUserController : ControllerBase
         _appDbContext.Users.Add(register);
         _appDbContext.SaveChanges();
 
-        //gerar token
-        var token = GenerateJwtToken(register);
-
-        return Ok(new 
-            { user.UserName, user.Email,user.Phone, token }
+        return Ok(new
+        //{ user.UserName, user.Email,user.Phone, token }
+        { user.UserName, user.Email, user.Phone }
         );
     }
 
-    // Método auxiliar para gerar um token JWT (já existente)
+    //Método auxiliar para gerar um token JWT(já existente)
     private string GenerateJwtToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
