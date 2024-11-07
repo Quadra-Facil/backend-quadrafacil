@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuadraFacil-backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cd8995f6769cc2f55339b52e50bbfa0b0bad75b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuadraFacil-backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuadraFacil-backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
