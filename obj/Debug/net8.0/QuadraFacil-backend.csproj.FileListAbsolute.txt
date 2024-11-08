@@ -261,3 +261,4 @@ C:\Users\Alan César\source\repos\Quadra Facil\backend\backend-quadrafacil\obj\D
 C:\Users\Alan César\source\repos\Quadra Facil\backend\backend-quadrafacil\obj\Debug\net8.0\QuadraFacil-backend.pdb
 C:\Users\Alan César\source\repos\Quadra Facil\backend\backend-quadrafacil\obj\Debug\net8.0\QuadraFacil-backend.genruntimeconfig.cache
 C:\Users\Alan César\source\repos\Quadra Facil\backend\backend-quadrafacil\obj\Debug\net8.0\ref\QuadraFacil-backend.dll
+C:\Users\Alan César\source\repos\Quadra Facil\backend\backend-quadrafacil\bin\Debug\net8.0\BCrypt.Net-Next.dll

@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using QuadraFacil_backend.API.Data;
 using QuadraFacil_backend.API.Models.Users;
+using BCrypt.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -32,11 +33,13 @@ public class CreateNewUserController : ControllerBase
             return BadRequest(new { Erro = "Usuário já existe" });
         }
 
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
         var register = new User
         {
             UserName = user.UserName,
             Email = user.Email,
-            Password = user.Password,
+            Password = hashedPassword,
             Role = "admin",
             Phone = user.Phone
         };
@@ -46,8 +49,9 @@ public class CreateNewUserController : ControllerBase
         _appDbContext.SaveChanges();
 
         return Ok(new
-        //{ user.UserName, user.Email,user.Phone, token }
-        { user.UserName, user.Email, user.Phone }
+        { 
+            user.UserName, user.Email, user.Phone 
+        }
         );
     }
 }

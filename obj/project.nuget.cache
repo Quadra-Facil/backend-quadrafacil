@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "8wm4bclAc/s=",
+  "dgSpecHash": "jmaYYalynGc=",
   "success": true,
   "projectFilePath": "C:\\Users\\Alan César\\source\\repos\\Quadra Facil\\backend\\backend-quadrafacil\\QuadraFacil-backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alan César\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Alan César\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\Alan César\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Alan César\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Alan César\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Alan César\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",
