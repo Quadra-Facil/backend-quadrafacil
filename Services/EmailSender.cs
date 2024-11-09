@@ -128,8 +128,8 @@ namespace QuadraFacil_backend.Services
             using var client = new SmtpClient();
             try
             {
-                // Tentando conectar com STARTTLS (o Gmail exige STARTTLS na porta 587)
-                await client.ConnectAsync(_smtpServer, _smtpPort, SecureSocketOptions.StartTls);  // Certifique-se de usar SecureSocketOptions.StartTls
+                // conectar com STARTTLS (o Gmail exige STARTTLS na porta 587)
+                await client.ConnectAsync(_smtpServer, _smtpPort, SecureSocketOptions.StartTls); 
                 await client.AuthenticateAsync(_smtpUser, _smtpPassword);
                 await client.SendAsync(emailMessage);
             }
