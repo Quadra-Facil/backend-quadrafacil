@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuadraFacil_backend.API.Models.Users;
+namespace QuadraFacil_backend.Models.Users;
 
 public class User
 {

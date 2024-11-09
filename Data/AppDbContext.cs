@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuadraFacil_backend.API.Models.Users;
 using QuadraFacil_backend.Models.Arena;
+using QuadraFacil_backend.Models.Users;
 using System.Net;
 
 namespace QuadraFacil_backend.API.Data;

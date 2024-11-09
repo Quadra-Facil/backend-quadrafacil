@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using QuadraFacil_backend.API.Data;
-using QuadraFacil_backend.API.Models.Users;
+using QuadraFacil_backend.Models.Users;
 using QuadraFacil_backend.Services;
 using BCrypt.Net;
 using System.ComponentModel.DataAnnotations;

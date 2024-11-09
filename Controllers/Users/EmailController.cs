@@ -1,0 +1,42 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using QuadraFacil_backend.Services; // Namespace com o IEmailService
+using System.Threading.Tasks;
+
+namespace QuadraFacil_backend.Controllers.Users
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmailController(IEmailService emailService) : ControllerBase
+    {
+        private readonly IEmailService _emailService = emailService;
+
+        // Endpoint para enviar e-mails
+        [HttpPost("email-send")]
+        public async Task<IActionResult> SendRecoveryEmail([FromBody] SendEmailRequest request)
+        {
+            if (string.IsNullOrEmpty(request.ToEmail) || string.IsNullOrEmpty(request.NomeUsuario) || string.IsNullOrEmpty(request.LinkRecuperacao))
+            {
+                return BadRequest("Por favor, forneça todos os dados necessários.");
+            }
+
+            try
+            {
+                // Envia o e-mail de recuperação com o HTML predefinido
+                await _emailService.EnviarEmailRecuperacaoSenha(request.ToEmail, request.NomeUsuario, request.LinkRecuperacao);
+                return Ok($"E-mail para {request.ToEmail} enviado com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao enviar e-mail: {ex.Message}");
+            }
+        }
+    }
+
+    // Modelo de dados para enviar o e-mail
+    public class SendEmailRequest
+    {
+        public string? ToEmail { get; set; }
+        public string? NomeUsuario { get; set; }
+        public string? LinkRecuperacao { get; set; }
+    }
+}

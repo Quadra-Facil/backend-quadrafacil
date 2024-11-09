@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using QuadraFacil_backend.API.Data;
-using QuadraFacil_backend.API.Models.Users;
 using BCrypt.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using QuadraFacil_backend.Models.Users;
 
 namespace QuadraFacil_backend.Controllers.Users;
 
