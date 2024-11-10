@@ -9,36 +9,29 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuadraFacil_backend.Controllers.Users;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthController(AppDbContext context, IConfiguration configuration, TokenService tokenService) : ControllerBase
 {
-    private readonly AppDbContext _context;
-    private readonly IConfiguration _configuration;
-    private readonly TokenService _tokenService;
-
-    public AuthController(AppDbContext context, IConfiguration configuration, TokenService tokenService)
-    {
-        _context = context;
-        _configuration = configuration;
-        _tokenService = tokenService;
-    }
+    private readonly AppDbContext _context = context;
+    private readonly IConfiguration _configuration = configuration;
+    private readonly TokenService _tokenService = tokenService;
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] UserLogin login)
+    async public Task<IActionResult> Login([FromBody] UserLogin login)
     {
-        var user = _context.Users.FirstOrDefault(u => u.Email == login.Email);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == login.Email);
         if (user == null)
         {
             return Unauthorized(new { Erro = "Usuário não encontrado" });
         }
 
         bool senhaCorreta = BCrypt.Net.BCrypt.Verify(login.Password, user.Password);
-        //var senhaCorreta = _context.Users.FirstOrDefault(u => u.Password == login.Password);
-        Console.Write("senhaaaaaaaaa  :"+senhaCorreta);
+
         if (!senhaCorreta)
         {
             return Unauthorized(new { Erro = "Senha incorreta" });
