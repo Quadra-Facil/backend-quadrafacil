@@ -17,12 +17,17 @@ public class Arena : ControllerBase
         _appDbContext = context;
     }
 
-    //public async Task<IActionResult> AddArena([FromBody] Arena arena)
+    [Authorize]
     [HttpPost]
-    public IActionResult Register([FromBody] ArenaModel arena)
+    async public Task<IActionResult> Register([FromBody] ArenaModel arena)
     {
 
-        var existingArena = _appDbContext.Arenas.FirstOrDefault(e => e.Name == arena.Name);
+        var existingArena = await _appDbContext.Arenas.FirstOrDefaultAsync(a => a.Name == arena.Name);
+
+        if (existingArena != null)
+        {
+            return NotFound("Arena já cadastrada");
+        }
 
 
         var newArena = new ArenaModel
@@ -31,8 +36,8 @@ public class Arena : ControllerBase
             Phone = arena.Phone
         };
 
-        _appDbContext.Arenas.Add(newArena);
-        _appDbContext.SaveChanges();
+        await _appDbContext.Arenas.AddAsync(newArena);
+        await _appDbContext.SaveChangesAsync();
 
         return Ok(new { newArena.Id, newArena.Name, newArena.Phone });
     }
@@ -43,7 +48,6 @@ public class Arena : ControllerBase
     {
         // Incluindo corretamente os dados de AdressArenas
         var getArenas = _appDbContext.Arenas.Include(a => a.AdressArenas).ToList();
-        //var getArenas = _appDbContext.Arenas.ToList();
 
         if (getArenas == null || getArenas.Count < 1)
         {
@@ -52,22 +56,4 @@ public class Arena : ControllerBase
 
         return Ok(getArenas);
     }
-
-
-    //[HttpGet("arena/{arenaId}")]
-    //public async Task<IActionResult> GetAddressByArenaId(int arenaId)
-    //{
-    //    // Busca o endereço com base no ArenaId e inclui os dados da Arena relacionados
-    //    var address = await _appDbContext.AdressArenas
-    //        .Include(a => a.Arena)  // Inclui os dados da Arena automaticamente
-    //        .FirstOrDefaultAsync(a => a.ArenaId == arenaId);
-
-    //    if (address == null)
-    //    {
-    //        return NotFound(new { message = "Address not found." });
-    //    }
-
-    //    // Retorna o objeto Address diretamente
-    //    return Ok(address);
-    //}
-};
+}

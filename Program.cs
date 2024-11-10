@@ -9,7 +9,7 @@ using Humanizer;
 using QuadraFacil_backend.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using static QuadraFacil_backend.Controllers.Users.EmailController;
+using static QuadraFacil_backend.Controllers.Users.SendEmailController;
 
 var builder = WebApplication.CreateBuilder(args);
 

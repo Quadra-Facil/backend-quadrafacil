@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace QuadraFacil_backend.Controllers.Users
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
-    public class EmailController(IEmailService emailService) : ControllerBase
+    public class SendEmailController(IEmailService emailService) : ControllerBase
     {
         private readonly IEmailService _emailService = emailService;
 

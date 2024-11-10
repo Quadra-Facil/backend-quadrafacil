@@ -26,10 +26,10 @@ public class Users : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Register([FromBody] User user)
+    public async Task<IActionResult> Register([FromBody] User user)
     {
 
-        var existingUser = _appDbContext.Users.FirstOrDefault(u => u.Email == user.Email);
+        var existingUser = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
         if (existingUser != null)
         {
             return BadRequest(new { Erro = "Usuário já existe" });
@@ -47,8 +47,8 @@ public class Users : ControllerBase
         };
 
         //add user
-        _appDbContext.Users.Add(register);
-        _appDbContext.SaveChanges();
+        await _appDbContext.Users.AddAsync(register);
+        await _appDbContext.SaveChangesAsync();
 
         return Ok(new
         { 
