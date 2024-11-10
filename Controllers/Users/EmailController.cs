@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuadraFacil_backend.Models.Users;
 using QuadraFacil_backend.Services; // Namespace com o IEmailService
 using System.Threading.Tasks;
 
