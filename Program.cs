@@ -7,6 +7,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Humanizer;
 using QuadraFacil_backend.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using static QuadraFacil_backend.Controllers.Users.EmailController;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +82,9 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
+
+// Registrar o serviço de e-mail
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 var app = builder.Build();
 

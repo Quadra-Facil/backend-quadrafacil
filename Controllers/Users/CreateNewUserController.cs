@@ -1,22 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using QuadraFacil_backend.API.Data;
-using QuadraFacil_backend.API.Models.Users;
 using BCrypt.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using QuadraFacil_backend.Models.Users;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace QuadraFacil_backend.Controllers.Users;
 
 [Route("api/user")] // Define a rota para este controller
 [ApiController] // Informa que este controller é uma API
-public class CreateNewUserController : ControllerBase
+public class Users : ControllerBase
 {
     private readonly AppDbContext _appDbContext;
     private readonly IConfiguration _configuration;
 
-    public CreateNewUserController(AppDbContext context, IConfiguration configuration)//injeção
+    public Users(AppDbContext context, IConfiguration configuration)//injeção
     {
         _appDbContext = context;
         _configuration = configuration;
@@ -53,5 +55,49 @@ public class CreateNewUserController : ControllerBase
             user.UserName, user.Email, user.Phone 
         }
         );
+    }
+
+    [HttpPut("reset-pass")]
+    public async Task<IActionResult> ResetPassword([FromQuery] string email, [FromBody] ResetPasswordModel resetpass)
+    {
+        // Verificação se a senha foi informada
+        if (string.IsNullOrEmpty(resetpass.Password))
+        {
+            return BadRequest("Senha não informada");
+        }
+
+        // Verificação se o email foi informado
+        if (string.IsNullOrEmpty(email))
+        {
+            return BadRequest("Email não informado");
+        }
+
+        // Encontrar o usuário pelo email
+        var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+        // Se não encontrar o usuário
+        if (user == null)
+        {
+            return NotFound("Usuário não encontrado");
+        }
+
+        // Atualizar a senha (com hash)
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(resetpass.Password);
+
+        user.Password = hashedPassword;//passando a alteração para user
+
+        try
+        {
+            // Salvar alterações no banco
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Senha alterada com sucesso!"
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar a senha.");
+        }
     }
 }

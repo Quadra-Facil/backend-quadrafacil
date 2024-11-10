@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using QuadraFacil_backend.API.Models.Users;
+using QuadraFacil_backend.Models.Users;
 
 namespace QuadraFacil_backend.Services
 {
