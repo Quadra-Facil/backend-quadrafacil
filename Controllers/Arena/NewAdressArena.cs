@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuadraFacil_backend.API.Data;
 using QuadraFacil_backend.Migrations;
@@ -9,24 +10,20 @@ namespace QuadraFacil_backend.Controllers.Arena;
 
 [ApiController]
 [Route("/api/adress")]
-public class AdressArenaController : ControllerBase
+public class AdressArenaController(AppDbContext context) : ControllerBase
 {
-    private readonly AppDbContext _appDbContext;
+    private readonly AppDbContext _appDbContext = context;
 
-    public AdressArenaController(AppDbContext context)
-    {
-        _appDbContext = context;
-    }
-
+    [Authorize]
     [HttpPost]
-    public IActionResult Register([FromBody] AdressArena adress)
+    async public Task<IActionResult> Register([FromBody] AdressArena adress)
     {
-        var existingAdress = _appDbContext.AdressArenas.FirstOrDefault(e => e.Street == adress.Street);
+        var existingAdress = await _appDbContext.AdressArenas.FirstOrDefaultAsync(e => e.Street == adress.Street);
 
 
         if (existingAdress != null)
         {
-            return BadRequest(new { Erro = $"{adress.Street} já existe!" });
+            return BadRequest(new { Erro = $"O email {adress.Street} já existe!" });
         }
 
         var newAdress = new AdressArena
@@ -40,8 +37,8 @@ public class AdressArenaController : ControllerBase
             ArenaId = adress.ArenaId
         };
 
-        _appDbContext.Add(newAdress);
-        _appDbContext.SaveChanges();
+        await _appDbContext.AddAsync(newAdress);
+        await _appDbContext.SaveChangesAsync();
 
         // Inclua arena ao adicionar o endereço
         var adressWithArena = _appDbContext.AdressArenas
