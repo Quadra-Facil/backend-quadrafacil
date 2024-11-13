@@ -23,7 +23,7 @@ public class AdressArenaController(AppDbContext context) : ControllerBase
 
         if (existingAdress != null)
         {
-            return BadRequest(new { Erro = $"O email {adress.Street} já existe!" });
+            return BadRequest(new { Erro = $"A arena {adress.Street} já existe!" });
         }
 
         var newAdress = new AdressArena
