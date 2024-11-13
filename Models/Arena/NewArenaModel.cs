@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuadraFacil_backend.Models.Arena.Space;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace QuadraFacil_backend.Models.Arena;
@@ -18,5 +19,7 @@ public class ArenaModel
 
     //[JsonIgnore]
     public ICollection<AdressArena>? AdressArenas { get; set; }
+
+    public ICollection<SpaceModel>? Spaces { get; set; }
 
 }
