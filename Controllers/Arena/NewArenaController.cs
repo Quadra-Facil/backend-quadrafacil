@@ -33,15 +33,17 @@ public class Arena : ControllerBase
         var newArena = new ArenaModel
         {
             Name = arena.Name,
-            Phone = arena.Phone
+            Phone = arena.Phone,
+            Status = arena.Status,
+            ValueHour = arena.ValueHour
         };
 
         await _appDbContext.Arenas.AddAsync(newArena);
         await _appDbContext.SaveChangesAsync();
 
-        return Ok(new { newArena.Id, newArena.Name, newArena.Phone });
+        return Ok(new { newArena.Id, newArena.Name, newArena.Phone, newArena.ValueHour, newArena.Status });
     }
-
+    
     [Authorize]
     [HttpGet]
     public IActionResult GetAllArenas()

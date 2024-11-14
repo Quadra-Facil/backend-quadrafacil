@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuadraFacil_backend.Models.Reserve;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -21,7 +22,8 @@ public class SpaceModel
     [ForeignKey("Arena")]
     public int ArenaId { get; set; }
 
-    //[JsonIgnore]
     public ArenaModel? Arena { get; set; }
+
+    public ReserveModel? Reserve { get; set; }
 
 }
