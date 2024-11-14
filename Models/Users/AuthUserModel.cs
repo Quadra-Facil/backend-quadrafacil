@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuadraFacil_backend.Models.Reserve;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace QuadraFacil_backend.Models.Users;
 
@@ -24,15 +26,12 @@ public class User
     public string? Phone { get; set; }
 
     [MaxLength(10)]
-    public string? Role { get; set; }
+    public string? Role { get; set; }    
+    
+    [MaxLength(10)]
+    [JsonIgnore]
+    public int? ArenaId { get; set; }
+
+    public ReserveModel? Reserve { get; set; }
 
 }
-
-
-//public class User
-//{
-//    public int Id { get; set; }
-//    public string Username { get; set; }
-//    public string Password { get; set; }
-//    public string Role { get; set; }
-//}

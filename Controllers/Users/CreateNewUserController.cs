@@ -43,7 +43,8 @@ public class Users : ControllerBase
             Email = user.Email,
             Password = hashedPassword,
             Role = "admin",
-            Phone = user.Phone
+            Phone = user.Phone,
+            ArenaId = 0
         };
 
         //add user

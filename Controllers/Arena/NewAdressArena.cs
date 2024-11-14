@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuadraFacil_backend.API.Data;
-using QuadraFacil_backend.Migrations;
 using QuadraFacil_backend.Models.Arena;
 
 
