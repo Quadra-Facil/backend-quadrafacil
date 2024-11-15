@@ -53,7 +53,7 @@ public class Users : ControllerBase
 
         return Ok(new
         { 
-            user.UserName, user.Email, user.Phone 
+            user.UserName, user.Email, user.Phone, user.Role
         }
         );
     }

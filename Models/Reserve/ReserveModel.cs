@@ -31,7 +31,6 @@ public class ReserveModel
     [Required]
     public TimeSpan? TimeFinal { get; set; }
 
-    [Required]
     public string? Status { get; set; }//pendente - marcado - recusado
 
     [Required]
