@@ -34,4 +34,6 @@ public class ReserveModel
     public string? Status { get; set; }//pendente - marcado - recusado
 
     public string? Observation { get; set; }
+
+    // public ArenaModel? Arenas { get; set; }
 }
