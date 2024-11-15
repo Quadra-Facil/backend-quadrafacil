@@ -24,6 +24,4 @@ public class SpaceModel
 
     public ArenaModel? Arena { get; set; }
 
-    public ReserveModel? Reserve { get; set; }
-
 }

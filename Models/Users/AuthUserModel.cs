@@ -25,13 +25,11 @@ public class User
     [Phone]
     public string? Phone { get; set; }
 
-    [MaxLength(10)]
+    [MaxLength(100)]
     public string? Role { get; set; }    
     
     [MaxLength(10)]
     [JsonIgnore]
     public int? ArenaId { get; set; }
-
-    public ReserveModel? Reserve { get; set; }
 
 }

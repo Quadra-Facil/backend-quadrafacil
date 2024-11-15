@@ -31,18 +31,9 @@ public class ReserveModel
     [Required]
     public TimeSpan? TimeFinal { get; set; }
 
-    [Required]
     public string? Status { get; set; }//pendente - marcado - recusado
 
-    [Required]
     public string? Observation { get; set; }
 
-    [ForeignKey("UserId")]
-    public User? User { get; set; }
-
-    [ForeignKey("ArenaId")]
-    public ArenaModel? Arena { get; set; }
-
-    [ForeignKey("SpaceId")]
-    public SpaceModel? Space { get; set; }
+    // public ArenaModel? Arenas { get; set; }
 }

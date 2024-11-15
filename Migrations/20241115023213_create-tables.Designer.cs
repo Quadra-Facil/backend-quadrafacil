@@ -12,8 +12,8 @@ using QuadraFacil_backend.API.Data;
 namespace QuadraFacil_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241114170404_create")]
-    partial class create
+    [Migration("20241115023213_create-tables")]
+    partial class createtables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,6 +128,46 @@ namespace QuadraFacil_backend.Migrations
                     b.ToTable("Spaces");
                 });
 
+            modelBuilder.Entity("QuadraFacil_backend.Models.Reserve.ReserveModel", b =>
+                {
+                    b.Property<int>("Id_reserve")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_reserve"));
+
+                    b.Property<int>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DataReserve")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SpaceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("TimeFinal")
+                        .IsRequired()
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("TimeInitial")
+                        .IsRequired()
+                        .HasColumnType("time");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_reserve");
+
+                    b.ToTable("Reserve");
+                });
+
             modelBuilder.Entity("QuadraFacil_backend.Models.Users.User", b =>
                 {
                     b.Property<int>("Id")
@@ -153,8 +193,8 @@ namespace QuadraFacil_backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
