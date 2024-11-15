@@ -17,20 +17,20 @@ public class ReserveController(AppDbContext context) : ControllerBase
     [HttpPost]
     async public Task<IActionResult> Register([FromBody] ReserveModel reserve)
     {
-        // Verifica se já existe uma reserva para o mesmo espaço, arena e data com horário conflitando
-        var existeConflito = await _appDbContext.Reserve
-            .AnyAsync(r =>
-                r.ArenaId == reserve.ArenaId &&         
-                r.SpaceId == reserve.SpaceId &&         
-                r.DataReserve == reserve.DataReserve &&
-                (
-                    (r.TimeInitial < reserve.TimeFinal && r.TimeFinal > reserve.TimeInitial)
-                )
-            );
 
-        if (existeConflito)
+        var existingReservation = await _appDbContext.Reserve
+                .Where(r => r.ArenaId == reserve.ArenaId
+                    && r.SpaceId == reserve.SpaceId // Mesmo space
+                    && r.DataReserve == reserve.DataReserve // Mesmo dia
+                    && (
+                        (reserve.TimeInitial < r.TimeFinal && reserve.TimeFinal > r.TimeInitial) // Conflito de horários
+                    ))
+                .FirstOrDefaultAsync();
+
+
+        if (existingReservation != null)
         {
-            return BadRequest(new { Message = "Já existe uma reserva para o mesmo espaço e horário. Tente outro horário." });
+          return BadRequest("Já existe uma reserva para a mesma arena, espaço, data e horário.");
         }
 
         var addReserve = new ReserveModel
@@ -48,7 +48,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
         await _appDbContext.Reserve.AddAsync(addReserve);
         await _appDbContext.SaveChangesAsync();
 
-        return Ok(new { Message = "Reserva criada, aguarde um administrador aprovar seu pedido" });
+        return Ok(new { Message = "Reserva criada, aguarde um administrador aprovar sua solicitação" });
     }
 
 }

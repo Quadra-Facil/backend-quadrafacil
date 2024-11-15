@@ -33,15 +33,5 @@ public class ReserveModel
 
     public string? Status { get; set; }//pendente - marcado - recusado
 
-    [Required]
     public string? Observation { get; set; }
-
-    [ForeignKey("UserId")]
-    public User? User { get; set; }
-
-    [ForeignKey("ArenaId")]
-    public ArenaModel? Arena { get; set; }
-
-    [ForeignKey("SpaceId")]
-    public SpaceModel? Space { get; set; }
 }

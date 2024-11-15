@@ -141,14 +141,12 @@ namespace QuadraFacil_backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Observation")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SpaceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan?>("TimeFinal")
@@ -163,15 +161,6 @@ namespace QuadraFacil_backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id_reserve");
-
-                    b.HasIndex("ArenaId")
-                        .IsUnique();
-
-                    b.HasIndex("SpaceId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Reserve");
                 });
@@ -201,8 +190,8 @@ namespace QuadraFacil_backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -236,50 +225,11 @@ namespace QuadraFacil_backend.Migrations
                     b.Navigation("Arena");
                 });
 
-            modelBuilder.Entity("QuadraFacil_backend.Models.Reserve.ReserveModel", b =>
-                {
-                    b.HasOne("QuadraFacil_backend.Models.Arena.ArenaModel", "Arena")
-                        .WithOne("Reserve")
-                        .HasForeignKey("QuadraFacil_backend.Models.Reserve.ReserveModel", "ArenaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("QuadraFacil_backend.Models.Arena.Space.SpaceModel", "Space")
-                        .WithOne("Reserve")
-                        .HasForeignKey("QuadraFacil_backend.Models.Reserve.ReserveModel", "SpaceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("QuadraFacil_backend.Models.Users.User", "User")
-                        .WithOne("Reserve")
-                        .HasForeignKey("QuadraFacil_backend.Models.Reserve.ReserveModel", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Arena");
-
-                    b.Navigation("Space");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("QuadraFacil_backend.Models.Arena.ArenaModel", b =>
                 {
                     b.Navigation("AdressArenas");
 
-                    b.Navigation("Reserve");
-
                     b.Navigation("Spaces");
-                });
-
-            modelBuilder.Entity("QuadraFacil_backend.Models.Arena.Space.SpaceModel", b =>
-                {
-                    b.Navigation("Reserve");
-                });
-
-            modelBuilder.Entity("QuadraFacil_backend.Models.Users.User", b =>
-                {
-                    b.Navigation("Reserve");
                 });
 #pragma warning restore 612, 618
         }

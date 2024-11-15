@@ -25,8 +25,6 @@ public class ArenaModel
     [Required]
     public int ValueHour { get; set; }
 
-    public ReserveModel? Reserve { get; set; }
-
     //[JsonIgnore]
     public ICollection<AdressArena>? AdressArenas { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuadraFacil_backend.Models.Users;
-using QuadraFacil_backend.Services; // Namespace com o IEmailService
+using QuadraFacil_backend.Services;
 using System.Threading.Tasks;
 
 namespace QuadraFacil_backend.Controllers.Users
@@ -11,7 +11,6 @@ namespace QuadraFacil_backend.Controllers.Users
     {
         private readonly IEmailService _emailService = emailService;
 
-        // Endpoint para enviar e-mails
         [HttpPost("email-send")]
         public async Task<IActionResult> SendRecoveryEmail([FromBody] SendEmailRequest request)
         {

@@ -13,7 +13,7 @@ namespace QuadraFacil_backend.API.Data
         {
         }
 
-        //DbSets aqui
+        //DbSets
         public DbSet<User> Users { get; set; }
         public DbSet<ArenaModel> Arenas { get; set; }
         public DbSet<AdressArena> AdressArenas { get; set; }
@@ -37,28 +37,7 @@ namespace QuadraFacil_backend.API.Data
                 .WithMany(a => a.Spaces)
                 .HasForeignKey(s => s.ArenaId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            // Relacionamento 1 para 1 entre User e Reserve
-            modelBuilder.Entity<User>()
-                .HasOne(r => r.Reserve)  // Um User tem um Reserve
-                .WithOne(u => u.User)    // Um Reserve tem um User
-                .HasForeignKey<ReserveModel>(u => u.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Relacionamento 1 para 1 entre ArenaModel e ReserveModel
-            modelBuilder.Entity<ArenaModel>()
-                .HasOne(r => r.Reserve)
-                .WithOne(a => a.Arena)
-                .HasForeignKey<ReserveModel>(a => a.ArenaId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Relacionamento 1 para 1 entre SpaceModel e ReserveModel
-            modelBuilder.Entity<SpaceModel>()
-                .HasOne(r => r.Reserve)
-                .WithOne(s => s.Space)
-                .HasForeignKey<ReserveModel>(s => s.SpaceId)
-                .OnDelete(DeleteBehavior.Restrict);
+        
         }
-
     }
 }

@@ -32,6 +32,4 @@ public class User
     [JsonIgnore]
     public int? ArenaId { get; set; }
 
-    public ReserveModel? Reserve { get; set; }
-
 }

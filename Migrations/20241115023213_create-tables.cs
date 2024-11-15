@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace QuadraFacil_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class create : Migration
+    public partial class createtables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +28,26 @@ namespace QuadraFacil_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reserve",
+                columns: table => new
+                {
+                    Id_reserve = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ArenaId = table.Column<int>(type: "int", nullable: false),
+                    SpaceId = table.Column<int>(type: "int", nullable: false),
+                    DataReserve = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeInitial = table.Column<TimeSpan>(type: "time", nullable: false),
+                    TimeFinal = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Observation = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reserve", x => x.Id_reserve);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -36,7 +57,7 @@ namespace QuadraFacil_backend.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Role = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ArenaId = table.Column<int>(type: "int", maxLength: 10, nullable: true)
                 },
                 constraints: table =>
@@ -106,6 +127,9 @@ namespace QuadraFacil_backend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AdressArenas");
+
+            migrationBuilder.DropTable(
+                name: "Reserve");
 
             migrationBuilder.DropTable(
                 name: "Spaces");
