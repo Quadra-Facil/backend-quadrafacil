@@ -8,6 +8,8 @@ using System.Text;
 using QuadraFacil_backend.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace QuadraFacil_backend.Controllers.Users;
 
@@ -95,4 +97,29 @@ public class Users : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar a senha.");
         }
     }
+
+
+    [Authorize]
+    [HttpGet("getUsers")]
+    async public Task<IActionResult> GetAllUser()
+    {
+        // Consulta para pegar todos os usuários
+        var users = await _appDbContext.Users.Select(user => new
+        {
+            user.Id,
+            user.UserName,
+            user.Email,
+            user.Role,
+            user.Phone,
+            user.ArenaId
+        }).ToListAsync();
+
+        return Ok(new
+        {
+            Users = users
+
+        });
+    }
+
+    
 }

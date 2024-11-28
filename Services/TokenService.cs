@@ -28,8 +28,12 @@ namespace QuadraFacil_backend.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("userId", user.Id.ToString()),
-                    new Claim("userName", user.UserName),
-                    new Claim("phone", user.Phone) // Corrigido para ter um nome de claim único
+                    new Claim("userName", user?.UserName),
+                    new Claim("email", user.Email),
+                    new Claim("role", user.Role),
+                    new Claim("arena", user.ArenaId.ToString()),
+                    new Claim("phone", user.Phone),
+
                 }),
                 Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256)

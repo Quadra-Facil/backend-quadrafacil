@@ -58,4 +58,25 @@ public class Arena : ControllerBase
 
         return Ok(getArenas);
     }
+
+    [Authorize]
+    [HttpPut("association-arena-user")]
+    public async Task<IActionResult> AssociationArenaUser([FromQuery] int id_user, [FromBody] AssociationArenaUserModel arenaUser)
+    {
+        var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == id_user);
+        user.ArenaId = arenaUser.RealArenaId;//passando a alteração para user
+
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Vínculo Arena/Usuário registrado."
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar a idArena.");
+        }
+    }
 }
