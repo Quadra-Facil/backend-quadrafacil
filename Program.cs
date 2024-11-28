@@ -4,12 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using QuadraFacil_backend.API.Data;
 using System.Text;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Humanizer;
 using QuadraFacil_backend.Services;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using static QuadraFacil_backend.Controllers.Users.SendEmailController;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +15,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Adiciona controladores com configurações JSON
 builder.Services.AddControllers().AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-    });
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
 
 // Adiciona serviços ao contêiner
 builder.Services.AddControllers();
@@ -86,6 +81,19 @@ builder.Services.AddAuthentication(x =>
 // Registrar o serviço de e-mail
 builder.Services.AddTransient<IEmailService, EmailService>();
 
+// Configuração do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsQuadraFacil", policy =>
+    {
+        // Adicione as URLs que você quer permitir que acessem a API
+        policy.WithOrigins("http://localhost:5173") // Exemplo: URL do front-end (Angular, React, etc)
+              .AllowAnyHeader()   // Permite qualquer cabeçalho
+              .AllowAnyMethod()   // Permite qualquer método HTTP (GET, POST, PUT, DELETE)
+              .AllowCredentials(); // Permite o envio de credenciais como cookies e cabeçalhos de autenticação
+    });
+});
+
 var app = builder.Build();
 
 // Configuração do pipeline de requisição HTTP
@@ -96,6 +104,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Aplique o middleware de CORS antes do middleware de autenticação e autorização
+app.UseCors("CorsQuadraFacil");
+
+// Middleware de autenticação e autorização devem ser aplicados após o CORS
+app.UseAuthentication();  // Registra o middleware de autenticação
+app.UseAuthorization();   // Registra o middleware de autorização
+
 app.MapControllers();
 
 app.Run();
