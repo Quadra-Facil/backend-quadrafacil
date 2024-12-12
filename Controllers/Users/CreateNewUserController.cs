@@ -44,7 +44,7 @@ public class Users : ControllerBase
             UserName = user.UserName,
             Email = user.Email,
             Password = hashedPassword,
-            Role = "admin",
+            Role = "client",
             Phone = user.Phone,
             ArenaId = 0
         };
@@ -53,8 +53,11 @@ public class Users : ControllerBase
         await _appDbContext.SaveChangesAsync();
 
         return Ok(new
-        { 
-            user.UserName, user.Email, user.Phone, user.Role
+        {
+            user.UserName,
+            user.Email,
+            user.Phone,
+            user.Role
         }
         );
     }
@@ -121,5 +124,5 @@ public class Users : ControllerBase
         });
     }
 
-    
+
 }
