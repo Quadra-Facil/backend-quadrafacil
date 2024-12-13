@@ -101,6 +101,33 @@ public class Users : ControllerBase
         }
     }
 
+    [Authorize]
+    [HttpPut("edit/rule")]
+    public async Task<IActionResult> EditRoleUser([FromBody] EditRoleUserModel user)
+    {
+        var userFind = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == user.UserId);
+        if (userFind == null)
+        {
+            return NotFound("Usuário não encontrado");
+        }
+
+        userFind.Role = "admin";//passando a alteração para user
+
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Vinculo admin registrado"
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao vincular usuário.");
+        }
+
+
+    }
 
     [Authorize]
     [HttpGet("getUsers")]
@@ -123,6 +150,10 @@ public class Users : ControllerBase
 
         });
     }
+
+
+
+
 
 
 }
