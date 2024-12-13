@@ -43,7 +43,7 @@ public class Arena : ControllerBase
 
         return Ok(new { newArena.Id, newArena.Name, newArena.Phone, newArena.ValueHour, newArena.Status });
     }
-    
+
     [Authorize]
     [HttpGet]
     public IActionResult GetAllArenas()
@@ -78,5 +78,20 @@ public class Arena : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar a idArena.");
         }
+    }
+
+    [Authorize]
+    [HttpGet("getArena")]
+    public async Task<IActionResult> GetNameArenaWithUser([FromBody] GetNameArenaWithUser getArena)
+    {
+        var getArenaResult = await _appDbContext.Arenas.Include(a => a.AdressArenas).FirstOrDefaultAsync(u => u.Id == getArena.arenaId);
+
+        if (getArenaResult == null)
+        {
+            return NotFound("Nenhuma arena encontrada.");
+        }
+
+        return Ok(getArenaResult);
+
     }
 }
