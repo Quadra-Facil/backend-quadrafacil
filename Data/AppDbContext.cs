@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using backend_quadrafacil.Models.PlanModel;
+using Microsoft.EntityFrameworkCore;
 using QuadraFacil_backend.Models.Arena;
 using QuadraFacil_backend.Models.Arena.Space;
 using QuadraFacil_backend.Models.Reserve;
@@ -19,6 +20,7 @@ namespace QuadraFacil_backend.API.Data
         public DbSet<AdressArena> AdressArenas { get; set; }
         public DbSet<ReserveModel> Reserve { get; set; }
         public DbSet<SpaceModel> Spaces { get; set; }
+        public DbSet<PlanModel> Plan { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,7 +39,7 @@ namespace QuadraFacil_backend.API.Data
                 .WithMany(a => a.Spaces)
                 .HasForeignKey(s => s.ArenaId)
                 .OnDelete(DeleteBehavior.Restrict);
-        
+
         }
     }
 }
