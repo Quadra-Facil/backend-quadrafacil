@@ -81,7 +81,7 @@ public class Arena : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("getArena")]
+    [HttpPost("getArena")]
     public async Task<IActionResult> GetNameArenaWithUser([FromBody] GetNameArenaWithUser getArena)
     {
         var getArenaResult = await _appDbContext.Arenas.Include(a => a.AdressArenas).FirstOrDefaultAsync(u => u.Id == getArena.arenaId);
