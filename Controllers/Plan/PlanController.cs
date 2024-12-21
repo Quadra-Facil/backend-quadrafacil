@@ -1,3 +1,4 @@
+using backend_quadrafacil.Models.Plan;
 using backend_quadrafacil.Models.PlanModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,16 @@ namespace backend_quadrafacil.Controllers.Plan
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] PlanModel plan)
+
         {
             // VERIFICANDO SE O PLANO JÁ EXISTE PARA AQUELA ARENA
             var existingPlan = await _appDbContext.Plan
-                .FirstOrDefaultAsync(p => p.PlanSelect == plan.PlanSelect && p.ArenaId == plan.ArenaId);
+                .FirstOrDefaultAsync(p => p.ArenaId == plan.ArenaId);
 
             if (existingPlan != null)
             {
                 // plano já existe
-                return Conflict("Plano já foi inserido nesta arena.");
+                return Conflict("Já temos um plano para esta arena.");
             }
 
             var dateNow = DateTime.Today;
@@ -92,5 +94,94 @@ namespace backend_quadrafacil.Controllers.Plan
 
             return Ok(newPlan);
         }
+
+        [Authorize]
+        [HttpPut("/edit")]
+        public async Task<IActionResult> EditStatusPlan([FromBody] EditStatusPlanModel editPlan)
+        {
+            // Recupera o plano pelo ArenaId
+            var getPlan = await _appDbContext.Plan.FirstOrDefaultAsync(p => p.ArenaId == editPlan.ArenaId);
+
+            if (getPlan == null)
+            {
+                return NotFound(new { Message = "Plano não encontrado." });
+            }
+
+            var dateAtual = DateTime.Now;
+
+            // Verifica se o tipo de plano está sendo alterado
+            if (getPlan.PlanSelect != editPlan.PlanSelect)
+            {
+                // Lógica para alterar o tipo de plano:
+                switch (editPlan.PlanSelect.ToLower())
+                {
+                    case "mensal":
+                        // Se for mensal, a data de expiração é ajustada para +30 dias
+                        getPlan.PlanExpiry = dateAtual.AddDays(30);
+                        break;
+                    case "semestral":
+                        // Se for semestral, a data de expiração é ajustada para +6 meses
+                        getPlan.PlanExpiry = dateAtual.AddMonths(6);
+                        break;
+                    case "anual":
+                        // Se for anual, a data de expiração é ajustada para +1 ano
+                        getPlan.PlanExpiry = dateAtual.AddYears(1);
+                        break;
+                    default:
+                        return BadRequest(new { Message = "Tipo de plano inválido." });
+                }
+
+                // Atualiza o Status para "ativo" quando o plano for alterado
+                getPlan.Status = "ativo";
+            }
+            else
+            {
+                // Se o plano não foi alterado, apenas prolonga a validade
+                if (getPlan.PlanExpiry.HasValue)
+                {
+                    switch (editPlan.PlanSelect.ToLower())
+                    {
+                        case "mensal":
+                            getPlan.PlanExpiry = getPlan.PlanExpiry.Value.AddDays(30);
+                            break;
+                        case "semestral":
+                            getPlan.PlanExpiry = getPlan.PlanExpiry.Value.AddMonths(6);
+                            break;
+                        case "anual":
+                            getPlan.PlanExpiry = getPlan.PlanExpiry.Value.AddYears(1);
+                            break;
+                        default:
+                            return BadRequest(new { Message = "Tipo de plano inválido." });
+                    }
+                    // Atualiza o Status para "ativo" ao prolongar o plano
+                    getPlan.Status = "ativo";
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Data de expiração não está definida." });
+                }
+            }
+
+            // Atualiza o ArenaId conforme passado no Postman
+            getPlan.ArenaId = editPlan.ArenaId;
+
+            // Verifica se o plano expirou, e se expirou, marca como "inativo"
+            if (getPlan.PlanExpiry.HasValue && getPlan.PlanExpiry.Value <= dateAtual)
+            {
+                getPlan.Status = "inativo";
+            }
+
+            try
+            {
+                await _appDbContext.SaveChangesAsync();
+                return Ok(new { Message = "Plano atualizado com sucesso." });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar plano.");
+            }
+        }
+
+
     }
 }
