@@ -12,7 +12,7 @@ using QuadraFacil_backend.API.Data;
 namespace QuadraFacil_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241212193413_last")]
+    [Migration("20241222121848_last")]
     partial class last
     {
         /// <inheritdoc />
@@ -204,6 +204,31 @@ namespace QuadraFacil_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("backend_quadrafacil.Models.PlanModel.PlanModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PlanExpiry")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PlanSelect")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Plan");
                 });
 
             modelBuilder.Entity("QuadraFacil_backend.Models.Arena.AdressArena", b =>

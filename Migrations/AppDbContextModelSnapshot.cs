@@ -203,6 +203,31 @@ namespace QuadraFacil_backend.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("backend_quadrafacil.Models.PlanModel.PlanModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PlanExpiry")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PlanSelect")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Plan");
+                });
+
             modelBuilder.Entity("QuadraFacil_backend.Models.Arena.AdressArena", b =>
                 {
                     b.HasOne("QuadraFacil_backend.Models.Arena.ArenaModel", "Arena")
