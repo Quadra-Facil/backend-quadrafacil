@@ -118,14 +118,17 @@ namespace backend_quadrafacil.Controllers.Plan
                     case "mensal":
                         // Se for mensal, a data de expiração é ajustada para +30 dias
                         getPlan.PlanExpiry = dateAtual.AddDays(30);
+                        getPlan.PlanSelect = "mensal";
                         break;
                     case "semestral":
                         // Se for semestral, a data de expiração é ajustada para +6 meses
                         getPlan.PlanExpiry = dateAtual.AddMonths(6);
+                        getPlan.PlanSelect = "semestral";
                         break;
                     case "anual":
                         // Se for anual, a data de expiração é ajustada para +1 ano
                         getPlan.PlanExpiry = dateAtual.AddYears(1);
+                        getPlan.PlanSelect = "anual";
                         break;
                     default:
                         return BadRequest(new { Message = "Tipo de plano inválido." });

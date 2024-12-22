@@ -218,7 +218,6 @@ namespace QuadraFacil_backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PlanSelect")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")

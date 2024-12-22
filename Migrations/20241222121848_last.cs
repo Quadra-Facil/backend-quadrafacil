@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuadraFacil_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class createtables : Migration
+    public partial class last : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,22 @@ namespace QuadraFacil_backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Arenas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plan",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlanSelect = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlanExpiry = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ArenaId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plan", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,6 +143,9 @@ namespace QuadraFacil_backend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AdressArenas");
+
+            migrationBuilder.DropTable(
+                name: "Plan");
 
             migrationBuilder.DropTable(
                 name: "Reserve");
