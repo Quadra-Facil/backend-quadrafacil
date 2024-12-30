@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using QuadraFacil_backend.Models.Arena;
 
 namespace backend_quadrafacil.Models.PlanModel;
 public class PlanModel
@@ -14,4 +15,6 @@ public class PlanModel
     public int ArenaId { get; set; }
 
     public string? Status { get; set; }
+
+    public ArenaModel? Arena { get; set; }  // Relacionamento com Arena
 }

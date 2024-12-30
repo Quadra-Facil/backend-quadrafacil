@@ -42,7 +42,7 @@ namespace backend_quadrafacil.Controllers.Plan
                     PlanSelect = "teste",
                     PlanExpiry = planTestExpire,
                     ArenaId = plan.ArenaId,
-                    Status = "pendente"
+                    Status = "ativo"
                 };
             }
             // PLANO mensal
@@ -146,12 +146,15 @@ namespace backend_quadrafacil.Controllers.Plan
                     {
                         case "mensal":
                             getPlan.PlanExpiry = getPlan.PlanExpiry.Value.AddDays(30);
+                            getPlan.PlanSelect = "mensal";
                             break;
                         case "semestral":
                             getPlan.PlanExpiry = getPlan.PlanExpiry.Value.AddMonths(6);
+                            getPlan.PlanSelect = "semestral";
                             break;
                         case "anual":
                             getPlan.PlanExpiry = getPlan.PlanExpiry.Value.AddYears(1);
+                            getPlan.PlanSelect = "anual";
                             break;
                         default:
                             return BadRequest(new { Message = "Tipo de plano inválido." });
@@ -184,6 +187,20 @@ namespace backend_quadrafacil.Controllers.Plan
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar plano.");
             }
         }
+
+        // [Authorize]
+        // [HttpPost]
+        // public async Task<IActionResult> GetPlanArena([FromBody] GetPlanOfArenaIdModel arena)
+        // {
+        //     var getArena = await _appDbContext.Plan.FirstOrDefaultAsync(a=>a.ArenaId == arena.ArenaId);
+
+        //     if(getArena == null)
+        //     {
+        //         return NotFound("Nenhuma arena encontrada.");
+        //     }
+
+        //     0
+        // }
 
 
     }

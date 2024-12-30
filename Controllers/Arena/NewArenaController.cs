@@ -46,17 +46,36 @@ public class Arena : ControllerBase
 
     [Authorize]
     [HttpGet]
-    public IActionResult GetAllArenas()
+    public async Task<IActionResult> GetAllArenas()
     {
-        // Incluindo corretamente os dados de AdressArenas
-        var getArenas = _appDbContext.Arenas.Include(a => a.AdressArenas).ToList();
+        // Incluindo os dados de AdressArenas (mas sem mudar o modelo, sem adicionar a coleção de Plans)
+        var getArenas = await _appDbContext.Arenas
+                                           .Include(a => a.AdressArenas)  // Inclui os endereços de cada arena
+                                           .ToListAsync();
 
+        // Se as arenas não foram encontradas, retorna um erro
         if (getArenas == null || getArenas.Count < 1)
         {
             return NotFound("Nenhuma arena encontrada.");
         }
 
-        return Ok(getArenas);
+        // Agora, buscamos os planos associados a cada arena
+        foreach (var arena in getArenas)
+        {
+            // Aqui fazemos a busca separada para os planos de cada arena usando o Id da arena
+            var plans = await _appDbContext.Plan
+                                           .Where(p => p.ArenaId == arena.Id)  // Filtrando os planos com base no ArenaId
+                                           .ToListAsync();  // Buscando todos os planos relacionados a cada arena
+
+            // Adicionamos os planos encontrados ao objeto da arena
+            arena.Plans = plans; // Associa os planos à arena (caso a classe `ArenaModel` tenha a propriedade Plans)
+        }
+
+        // Agora, retornamos o JSON com as arenas e seus respectivos planos
+        return Ok(new
+        {
+            Arenas = getArenas
+        });
     }
 
     [Authorize]
@@ -81,10 +100,32 @@ public class Arena : ControllerBase
     }
 
     [Authorize]
+    [HttpPut("status-edit")]
+    public async Task<IActionResult> StatusEdit([FromBody] StatusEditModel statusModel)
+    {
+        var getArena = await _appDbContext.Arenas.FirstOrDefaultAsync(u => u.Id == statusModel.RealArenaId);
+        getArena.Status = statusModel.NewStatus;//passando a alteração para user
+
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Status alterado."
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar status.");
+        }
+    }
+
+    [Authorize]
     [HttpPost("getArena")]
     public async Task<IActionResult> GetNameArenaWithUser([FromBody] GetNameArenaWithUser getArena)
     {
-        var getArenaResult = await _appDbContext.Arenas.Include(a => a.AdressArenas).FirstOrDefaultAsync(u => u.Id == getArena.arenaId);
+        var getArenaResult = await _appDbContext.Arenas.
+        Include(a => a.AdressArenas).FirstOrDefaultAsync(u => u.Id == getArena.arenaId);
 
         if (getArenaResult == null)
         {
