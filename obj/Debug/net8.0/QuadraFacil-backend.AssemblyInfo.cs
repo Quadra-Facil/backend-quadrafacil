@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuadraFacil-backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68dce9df3f5ff983fe8b924fb6ed99e3c4853bc0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b500ab5bedc7a058f469d2b887a68a0cc911af7")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuadraFacil-backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuadraFacil-backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

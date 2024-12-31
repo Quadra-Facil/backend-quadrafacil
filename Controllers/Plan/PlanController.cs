@@ -29,7 +29,6 @@ namespace backend_quadrafacil.Controllers.Plan
                 return Conflict("Já temos um plano para esta arena.");
             }
 
-
             PlanModel newPlan;
 
             // PLANO DE TESTE (30 DIAS)
@@ -188,19 +187,24 @@ namespace backend_quadrafacil.Controllers.Plan
             }
         }
 
-        // [Authorize]
-        // [HttpPost]
-        // public async Task<IActionResult> GetPlanArena([FromBody] GetPlanOfArenaIdModel arena)
-        // {
-        //     var getArena = await _appDbContext.Plan.FirstOrDefaultAsync(a=>a.ArenaId == arena.ArenaId);
+        [Authorize]
+        [HttpPost("getplan-user")]
+        public async Task<IActionResult> GetPlanForUser([FromBody] GetPlanForUserModel arena)
+        {
+            var getPlan = await _appDbContext.Plan.FirstOrDefaultAsync(a => a.ArenaId == arena.ArenaId);
 
-        //     if(getArena == null)
-        //     {
-        //         return NotFound("Nenhuma arena encontrada.");
-        //     }
+            if (getPlan == null)
+            {
+                return NotFound("Nenhum plano encontrado.");
+            }
+            var arenaName = await _appDbContext.Arenas
+                .Where(a => a.Id == getPlan.ArenaId)
+                .Select(a => a.Name)
+                .FirstOrDefaultAsync();
 
-        //     0
-        // }
+            return Ok(new { getPlan, arenaName });
+
+        }
 
 
     }
