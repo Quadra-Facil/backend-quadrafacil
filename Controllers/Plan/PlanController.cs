@@ -22,13 +22,13 @@ namespace backend_quadrafacil.Controllers.Plan
             var existingPlan = await _appDbContext.Plan
                 .FirstOrDefaultAsync(p => p.ArenaId == plan.ArenaId);
 
-            if (existingPlan != null)
+            var dateNow = DateTime.Today;
+            if (existingPlan != null && existingPlan.PlanExpiry < dateNow)
             {
                 // plano já existe
                 return Conflict("Já temos um plano para esta arena.");
             }
 
-            var dateNow = DateTime.Today;
 
             PlanModel newPlan;
 
@@ -55,7 +55,7 @@ namespace backend_quadrafacil.Controllers.Plan
                     PlanSelect = "mensal",
                     PlanExpiry = planSemestreExpire,
                     ArenaId = plan.ArenaId,
-                    Status = "pendente"
+                    Status = "ativo"
                 };
             }
             // PLANO SEMESTRAL (6 MESES)
@@ -68,7 +68,7 @@ namespace backend_quadrafacil.Controllers.Plan
                     PlanSelect = "semestral",
                     PlanExpiry = planSemestreExpire,
                     ArenaId = plan.ArenaId,
-                    Status = "pendente"
+                    Status = "ativo"
                 };
             }
             // PLANO ANUAL (1 ANO)
@@ -81,7 +81,7 @@ namespace backend_quadrafacil.Controllers.Plan
                     PlanSelect = "anual",
                     PlanExpiry = planAnnualExpire,
                     ArenaId = plan.ArenaId,
-                    Status = "pendente"
+                    Status = "ativo"
                 };
             }
             else

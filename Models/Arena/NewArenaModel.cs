@@ -31,5 +31,5 @@ public class ArenaModel
 
     public ICollection<SpaceModel>? Spaces { get; set; }
     // Relacionamento com os planos
-    public ICollection<PlanModel> Plans { get; set; }
+    public ICollection<PlanModel>? Plans { get; set; }
 }

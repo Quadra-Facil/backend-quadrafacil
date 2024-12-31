@@ -29,7 +29,6 @@ public class Arena : ControllerBase
             return NotFound("Arena já cadastrada");
         }
 
-
         var newArena = new ArenaModel
         {
             Name = arena.Name,
