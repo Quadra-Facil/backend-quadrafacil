@@ -18,6 +18,8 @@ public class SpaceModel
     [JsonIgnore]
     public string? Status { get; set; }
 
+    public string? Sports { get; set; }
+
     //referencia a arena
     [ForeignKey("Arena")]
     public int ArenaId { get; set; }

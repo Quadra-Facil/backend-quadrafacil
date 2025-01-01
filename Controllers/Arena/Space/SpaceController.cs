@@ -18,9 +18,9 @@ public class SpaceController(AppDbContext context) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] SpaceModel space)
     {
-      var spaceExist = await _appDbContext.Spaces
-     .Include(s => s.Arena) // Incluindo a Arena associada
-     .FirstOrDefaultAsync(u => u.Name == space.Name && u.Arena.Id == space.ArenaId);
+        var spaceExist = await _appDbContext.Spaces
+       .Include(s => s.Arena) // Incluindo a Arena associada
+       .FirstOrDefaultAsync(u => u.Name == space.Name && u.Arena.Id == space.ArenaId);
 
 
         if (spaceExist != null)
@@ -32,6 +32,7 @@ public class SpaceController(AppDbContext context) : ControllerBase
         {
             Name = space.Name,
             ArenaId = space.ArenaId,
+            Sports = space?.Sports,
             Status = "Disponível"
         };
 
