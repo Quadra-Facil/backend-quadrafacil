@@ -44,8 +44,44 @@ public class SpaceController(AppDbContext context) : ControllerBase
         .FirstOrDefault(e => e.SpaceId == addSpace.ArenaId);
 
         return Ok(SpaceWithArena);
-
     }
 
+    [Authorize]
+    [HttpPost("get-spaces")]
+    async public Task<IActionResult> GetSpacesWithArena([FromBody] GetSpaceAndArenaModel arena)
+    {
+        var getSpaces = await _appDbContext.Spaces
+        .Where(s => s.ArenaId == arena.ArenaId)
+        .ToListAsync();
+
+        if (getSpaces == null)
+        {
+            return NotFound("Nenhum espaço encontrado");
+        }
+
+        return Ok(getSpaces);
+    }
+
+    [Authorize]
+    [HttpPut("edit-space")]
+    async public Task<IActionResult> EditStatusSpace([FromBody] EditStatusSpaceModel space)
+    {
+        var getSpace = await _appDbContext.Spaces.FirstOrDefaultAsync(s => s.SpaceId == space.SpaceId);
+
+        getSpace.Status = space.Status;//alterando status
+
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Status do espaço foi alterado."
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar status.");
+        }
+    }
 
 }
