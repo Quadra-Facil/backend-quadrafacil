@@ -84,4 +84,37 @@ public class SpaceController(AppDbContext context) : ControllerBase
         }
     }
 
+
+    [Authorize]
+    [HttpPost("search/space")]
+    public async Task<IActionResult> GetSpacesWithArenaAndSportsSearch([FromBody] GetSpaceWithArenaAndSportsModel space)
+    {
+        if (space == null || space.Sports == null || !space.Sports.Any())
+            return BadRequest("ArenaId e lista de esportes são obrigatórios.");
+
+        // Converte os esportes recebidos para minúsculas e remove espaços extras
+        var esportesArray = space.Sports
+                                 .Split(',')
+                                 .Select(e => e.Trim().ToLower()) // Faz isso fora da consulta LINQ
+                                 .ToList();
+
+        // Primeiramente, busque todos os espaços com a ArenaId
+        var spaces = await _appDbContext.Spaces
+            .Where(s => s.ArenaId == space.ArenaId) // Filtro apenas pelo ArenaId
+            .ToListAsync();  // Carrega os dados para memória
+
+        // Agora, filtra os resultados na memória após a consulta
+        var filteredSpaces = spaces
+            .Where(s => s.Sports != null &&
+                        esportesArray.Any(esporte =>
+                            s.Sports.ToLower() // Comparação dos esportes (na memória) em minúsculas
+                                .Split(',')
+                                .Any(dbSport => dbSport.Trim().ToLower() == esporte))) // Comparação exata
+            .ToList();
+
+        return Ok(filteredSpaces);
+    }
+
+
+
 }
