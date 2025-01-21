@@ -116,7 +116,6 @@ namespace QuadraFacil_backend.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Sports")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
@@ -160,6 +159,9 @@ namespace QuadraFacil_backend.Migrations
                     b.Property<TimeSpan?>("TimeInitial")
                         .IsRequired()
                         .HasColumnType("time");
+
+                    b.Property<string>("TypeReserve")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

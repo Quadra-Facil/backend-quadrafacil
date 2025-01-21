@@ -43,7 +43,8 @@ public class ReserveController(AppDbContext context) : ControllerBase
             TimeInitial = reserve.TimeInitial,
             TimeFinal = reserve.TimeFinal,
             Status = "Pendente",
-            Observation = reserve.Observation
+            Observation = reserve.Observation,
+            TypeReserve = reserve.TypeReserve
         };
 
         await _appDbContext.Reserve.AddAsync(addReserve);
@@ -105,5 +106,19 @@ public class ReserveController(AppDbContext context) : ControllerBase
             ArenaName = arenaData,
             Reservas = reservaDetails
         });
+    }
+
+    [Authorize]
+    [HttpPost("/getReserves/date")]
+    async public Task<IActionResult> GetReservesDateSpace([FromBody] GetReservesWithDateAndSpaceModel reserve)
+    {
+        var existingReservation = await _appDbContext.Reserve
+               .Where(r => r.ArenaId == reserve.ArenaId
+                   && r.SpaceId == reserve.SpaceId // Mesmo space
+                   && r.DataReserve == reserve.DataReserve // Mesmo dia
+                   )
+                   .ToArrayAsync();
+        return Ok(existingReservation);
+
     }
 }

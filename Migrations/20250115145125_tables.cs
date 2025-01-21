@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuadraFacil_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class last : Migration
+    public partial class tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,22 +28,6 @@ namespace QuadraFacil_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plan",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlanSelect = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PlanExpiry = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ArenaId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Plan", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reserve",
                 columns: table => new
                 {
@@ -56,6 +40,7 @@ namespace QuadraFacil_backend.Migrations
                     TimeInitial = table.Column<TimeSpan>(type: "time", nullable: false),
                     TimeFinal = table.Column<TimeSpan>(type: "time", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TypeReserve = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Observation = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -107,6 +92,28 @@ namespace QuadraFacil_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Plan",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlanSelect = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlanExpiry = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ArenaId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Plan_Arenas_ArenaId",
+                        column: x => x.ArenaId,
+                        principalTable: "Arenas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Spaces",
                 columns: table => new
                 {
@@ -114,6 +121,7 @@ namespace QuadraFacil_backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sports = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ArenaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -130,6 +138,11 @@ namespace QuadraFacil_backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AdressArenas_ArenaId",
                 table: "AdressArenas",
+                column: "ArenaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plan_ArenaId",
+                table: "Plan",
                 column: "ArenaId");
 
             migrationBuilder.CreateIndex(

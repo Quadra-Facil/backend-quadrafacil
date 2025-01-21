@@ -134,4 +134,49 @@ public class Arena : ControllerBase
         return Ok(getArenaResult);
 
     }
+
+
+    [Authorize]
+    [HttpPut("arena-edit")]
+    public async Task<IActionResult> EditArenaAndAdress([FromBody] EditArenaAndAdressModel arena)
+    {
+
+        var getArena = await _appDbContext.Arenas.FirstOrDefaultAsync(u => u.Id == arena.ArenaId);
+        if (getArena == null)
+        {
+            return NotFound("Arena não encontrada.");
+        }
+
+        var getAdressArena = await _appDbContext.AdressArenas.FirstOrDefaultAsync(u => u.ArenaId == arena.ArenaId);
+        if (getAdressArena == null)
+        {
+            return NotFound("Endereço da arena não encontrado.");
+        }
+
+
+        //passando a alteração para user
+        getArena.Name = arena.Name;
+        getArena.Phone = arena.Phone;
+        getArena.ValueHour = arena.ValueHour;
+
+        getAdressArena.State = arena.State;
+        getAdressArena.City = arena.City;
+        getAdressArena.Street = arena.Street;
+        getAdressArena.Neighborhood = arena.Neighborhood;
+        getAdressArena.Number = arena.Number;
+        getAdressArena.Reference = arena.Reference;
+
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Alterações realizadas."
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar dados.");
+        }
+    }
 }

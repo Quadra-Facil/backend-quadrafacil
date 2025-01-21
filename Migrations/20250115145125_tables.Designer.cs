@@ -12,8 +12,8 @@ using QuadraFacil_backend.API.Data;
 namespace QuadraFacil_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241222121848_last")]
-    partial class last
+    [Migration("20250115145125_tables")]
+    partial class tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,6 +118,9 @@ namespace QuadraFacil_backend.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("Sports")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -159,6 +162,9 @@ namespace QuadraFacil_backend.Migrations
                     b.Property<TimeSpan?>("TimeInitial")
                         .IsRequired()
                         .HasColumnType("time");
+
+                    b.Property<string>("TypeReserve")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -228,6 +234,8 @@ namespace QuadraFacil_backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ArenaId");
+
                     b.ToTable("Plan");
                 });
 
@@ -253,9 +261,22 @@ namespace QuadraFacil_backend.Migrations
                     b.Navigation("Arena");
                 });
 
+            modelBuilder.Entity("backend_quadrafacil.Models.PlanModel.PlanModel", b =>
+                {
+                    b.HasOne("QuadraFacil_backend.Models.Arena.ArenaModel", "Arena")
+                        .WithMany("Plans")
+                        .HasForeignKey("ArenaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Arena");
+                });
+
             modelBuilder.Entity("QuadraFacil_backend.Models.Arena.ArenaModel", b =>
                 {
                     b.Navigation("AdressArenas");
+
+                    b.Navigation("Plans");
 
                     b.Navigation("Spaces");
                 });
