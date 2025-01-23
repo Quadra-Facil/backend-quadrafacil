@@ -1,4 +1,6 @@
-﻿using backend_quadrafacil.Models.PlanModel;
+﻿using backend_quadrafacil.Models.Plan;
+using backend_quadrafacil.Models.PlanModel;
+using backend_quadrafacil.Models.Promotion;
 using Microsoft.EntityFrameworkCore;
 using QuadraFacil_backend.Models.Arena;
 using QuadraFacil_backend.Models.Arena.Space;
@@ -21,6 +23,9 @@ namespace QuadraFacil_backend.API.Data
         public DbSet<ReserveModel> Reserve { get; set; }
         public DbSet<SpaceModel> Spaces { get; set; }
         public DbSet<PlanModel> Plan { get; set; }
+        public DbSet<DesativeProgramArenaModel> DesativeProgram { get; set; }
+        public DbSet<PromotionModel> Promotions { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

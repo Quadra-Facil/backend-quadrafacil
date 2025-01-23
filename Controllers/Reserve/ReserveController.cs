@@ -50,7 +50,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
         await _appDbContext.Reserve.AddAsync(addReserve);
         await _appDbContext.SaveChangesAsync();
 
-        return Ok(new { Message = "Reserva criada, aguarde um administrador aprovar sua solicitação" });
+        return Ok(new { Message = "Um adm aprovará sua solicitação." });
     }
 
     [Authorize]

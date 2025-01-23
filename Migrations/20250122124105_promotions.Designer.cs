@@ -12,8 +12,8 @@ using QuadraFacil_backend.API.Data;
 namespace QuadraFacil_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250115145125_tables")]
-    partial class tables
+    [Migration("20250122124105_promotions")]
+    partial class promotions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,6 +149,12 @@ namespace QuadraFacil_backend.Migrations
                     b.Property<string>("Observation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("Promotion")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PromotionType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SpaceId")
                         .HasColumnType("int");
 
@@ -212,6 +218,33 @@ namespace QuadraFacil_backend.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("backend_quadrafacil.Models.Plan.DesativeProgramArenaModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DesativeProgram");
+                });
+
             modelBuilder.Entity("backend_quadrafacil.Models.PlanModel.PlanModel", b =>
                 {
                     b.Property<int>("Id")
@@ -237,6 +270,37 @@ namespace QuadraFacil_backend.Migrations
                     b.HasIndex("ArenaId");
 
                     b.ToTable("Plan");
+                });
+
+            modelBuilder.Entity("backend_quadrafacil.Models.Promotion.PromotionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PromotionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Promotions");
                 });
 
             modelBuilder.Entity("QuadraFacil_backend.Models.Arena.AdressArena", b =>
