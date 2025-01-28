@@ -18,6 +18,18 @@ namespace backend_quadrafacil.Controllers.DesativeProgram
     [HttpPost("desative/program")]
     public async Task<IActionResult> Register([FromBody] DesativeProgramArenaModel desativiProgram)
     {
+      // Verifica se já existe um registro de programação para a arena
+      var existingProgram = await _appDbContext.DesativeProgram
+          .Where(p => p.ArenaId == desativiProgram.ArenaId)
+          .FirstOrDefaultAsync();
+
+      // Se já existir um registro para a arena, retorna um erro
+      if (existingProgram != null)
+      {
+        return BadRequest("Somente um registro por vez.");
+      }
+
+      // Caso contrário, cria o novo registro
       var register = new DesativeProgramArenaModel
       {
         StartDate = desativiProgram.StartDate,
@@ -26,11 +38,14 @@ namespace backend_quadrafacil.Controllers.DesativeProgram
         Reason = desativiProgram.Reason
       };
 
+      // Adiciona o novo registro no banco
       await _appDbContext.AddAsync(register);
       await _appDbContext.SaveChangesAsync();
 
+      // Retorna o registro criado com status 200 OK
       return Ok(register);
     }
+
 
     [Authorize]
     [HttpPost("get")]

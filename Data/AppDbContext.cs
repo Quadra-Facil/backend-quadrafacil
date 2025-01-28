@@ -26,6 +26,8 @@ namespace QuadraFacil_backend.API.Data
         public DbSet<DesativeProgramArenaModel> DesativeProgram { get; set; }
         public DbSet<PromotionModel> Promotions { get; set; }
 
+        public DbSet<ArenaHoursModel> ArenaHours { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
