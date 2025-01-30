@@ -47,7 +47,8 @@ public class ArenaHoursController : ControllerBase
           ArenaId = horas.ArenaId,
           WeekDays = new List<int> { dia },  // Atribui o dia individualmente
           StartTime = horas.StartTime,
-          EndTime = horas.EndTime
+          EndTime = horas.EndTime,
+          Open = horas.Open
         };
 
         // Adiciona o novo registro no banco de dados

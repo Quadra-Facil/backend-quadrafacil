@@ -19,6 +19,8 @@ public class ArenaHoursModel
 
   [Required]
   public TimeSpan EndTime { get; set; } // End time
+
+  public bool? Open { get; set; }
 }
 
 
