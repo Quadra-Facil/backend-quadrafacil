@@ -22,7 +22,7 @@ public class ArenaHoursController : ControllerBase
   public async Task<IActionResult> Registrar([FromBody] ArenaHoursModel horas)
   {
     // Valida se HoraInicio é menor que HoraFim
-    if (horas.StartTime >= horas.EndTime)
+    if (horas.Open == true && (horas.StartTime >= horas.EndTime))
     {
       return BadRequest("A hora de início deve ser anterior à hora de término.");
     }
@@ -67,47 +67,40 @@ public class ArenaHoursController : ControllerBase
     }
   }
 
+  [Authorize]
+  [HttpPost("get")]
+  async public Task<IActionResult> GetHoursArena([FromBody] GetHoursWithArenaModel hours)
+  {
+    var getHours = await _appDbContext.ArenaHours
+    .Where(s => s.ArenaId == hours.ArenaId)
+    .ToListAsync();
 
+    if (getHours == null)
+    {
+      return NotFound("Nenhum horário.");
+    }
 
+    return Ok(getHours);
+  }
 
+  [Authorize]
+  [HttpDelete("delete")]
+  public async Task<IActionResult> DeleteHours([FromBody] DeleteHoursModel hours)
+  {
+    var getHoursBd = await _appDbContext.ArenaHours
+        .Where(s => s.Id == hours.Id)
+        .FirstOrDefaultAsync();
 
+    if (getHoursBd == null)
+    {
+      return NotFound("Não encontrado o expediente.");
+    }
 
+    _appDbContext.ArenaHours.Remove(getHoursBd);
 
+    await _appDbContext.SaveChangesAsync();
 
-  // [Authorize]
-  // [HttpPost("get")]
-  // async public Task<IActionResult> GetDesativeProgram([FromBody] GetDesativeProgramArenaModel getProgram)
-  // {
-  //   var getProg = await _appDbContext.DesativeProgram
-  //   .Where(s => s.ArenaId == getProgram.ArenaId)
-  //   .ToListAsync();
-
-  //   if (getProg == null)
-  //   {
-  //     return NotFound("Nenhuma programação.");
-  //   }
-
-  //   return Ok(getProg);
-  // }
-
-  // [Authorize]
-  // [HttpDelete("delete")]
-  // async public Task<IActionResult> DeleteDesativeProgram([FromBody] DeleteDesativeProgramArenaModel getProgram)
-  // {
-  //   var programToDelete = await _appDbContext.DesativeProgram
-  //       .Where(s => s.Id == getProgram.Id)
-  //       .FirstOrDefaultAsync();
-
-  //   if (programToDelete == null)
-  //   {
-  //     return NotFound("Programação não encontrada.");
-  //   }
-
-  //   _appDbContext.DesativeProgram.Remove(programToDelete);
-
-  //   await _appDbContext.SaveChangesAsync();
-
-  //   return Ok("Programação desativada com sucesso.");
-  // }
+    return Ok("Expediente deletado com sucesso.");
+  }
 
 }
