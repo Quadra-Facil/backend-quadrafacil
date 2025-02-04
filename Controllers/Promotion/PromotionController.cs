@@ -31,7 +31,7 @@ public class PromotionsController : ControllerBase
     else
     {
       // Verifica se a data de início é anterior à data de término
-      if (promotion.StartDate >= promotion.EndDate)
+      if (promotion.PromotionType != "dayuse" && promotion.StartDate >= promotion.EndDate)
       {
         return BadRequest("A data de início deve ser anterior à data de término.");
       }
@@ -44,7 +44,7 @@ public class PromotionsController : ControllerBase
       {
         // Verifica se já existe uma promoção para a mesma ArenaId e WeekDay
         var registroExistente = await _appDbContext.Promotions
-            .FirstOrDefaultAsync(p => p.ArenaId == promotion.ArenaId && p.WeekDays.Contains(dia));
+            .FirstOrDefaultAsync(p => p.ArenaId == promotion.ArenaId && p.WeekDays.Contains(dia) && p.PromotionType == promotion.PromotionType);
 
         if (registroExistente != null)
         {
