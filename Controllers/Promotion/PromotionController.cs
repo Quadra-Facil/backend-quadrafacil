@@ -80,4 +80,42 @@ public class PromotionsController : ControllerBase
     }
   }
 
+  [Authorize]
+  [HttpPost("get-promotion")]
+  public async Task<IActionResult> GetAllPromotionWithArena([FromBody] GetPromotionsWithArenaModel getpromotion)
+  {
+    var getPromo = await _appDbContext.Promotions
+     .Where(s => s.ArenaId == getpromotion.ArenaId)
+     .OrderBy(s => s.PromotionType)  // Ordena por PromotionType em ordem crescente
+     .ToListAsync();
+
+
+    if (getPromo == null)
+    {
+      return NotFound("Nenhuma promoção registrada.");
+    }
+
+    return Ok(getPromo);
+  }
+
+  [Authorize]
+  [HttpDelete("delete")]
+  async public Task<IActionResult> DeletePromotion([FromBody] GetPromotionsWithArenaModel delete)
+  {
+    var promotionDel = await _appDbContext.Promotions
+        .Where(s => s.Id == delete.ArenaId)
+        .FirstOrDefaultAsync();
+
+    if (promotionDel == null)
+    {
+      return NotFound("Promoção não encontrada.");
+    }
+
+    _appDbContext.Promotions.Remove(promotionDel);
+
+    await _appDbContext.SaveChangesAsync();
+
+    return Ok("Promoção deletada com sucesso.");
+  }
+
 }
