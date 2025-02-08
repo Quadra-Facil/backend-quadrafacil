@@ -40,5 +40,7 @@ public class ReserveModel
     public string? PromotionType { get; set; }
     public string? Observation { get; set; }
 
+    public int? Value { get; set; }
+
     // public ArenaModel? Arenas { get; set; }
 }

@@ -117,5 +117,4 @@ public class PromotionsController : ControllerBase
 
     return Ok("Promoção deletada com sucesso.");
   }
-
 }

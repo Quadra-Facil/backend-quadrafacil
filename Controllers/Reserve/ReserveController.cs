@@ -44,13 +44,16 @@ public class ReserveController(AppDbContext context) : ControllerBase
             TimeFinal = reserve.TimeFinal,
             Status = "Pendente",
             Observation = reserve.Observation,
-            TypeReserve = reserve.TypeReserve
+            TypeReserve = reserve.TypeReserve,
+            Promotion = reserve.Promotion,
+            PromotionType = reserve.PromotionType,
+            Value = reserve.Value
         };
 
         await _appDbContext.Reserve.AddAsync(addReserve);
         await _appDbContext.SaveChangesAsync();
 
-        return Ok(new { Message = "Um adm aprovará sua solicitação." });
+        return Ok(new { Message = "Um ADM aprovará sua solicitação." });
     }
 
     [Authorize]
