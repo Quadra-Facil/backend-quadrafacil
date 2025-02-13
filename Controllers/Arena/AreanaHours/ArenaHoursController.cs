@@ -73,6 +73,7 @@ public class ArenaHoursController : ControllerBase
   {
     var getHours = await _appDbContext.ArenaHours
     .Where(s => s.ArenaId == hours.ArenaId)
+    .OrderBy(o => o.WeekDays)
     .ToListAsync();
 
     if (getHours == null)
