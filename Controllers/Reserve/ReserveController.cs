@@ -42,7 +42,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
             DataReserve = reserve.DataReserve,
             TimeInitial = reserve.TimeInitial,
             TimeFinal = reserve.TimeFinal,
-            Status = "Pendente",
+            Status = "Realizada",
             Observation = reserve.Observation,
             TypeReserve = reserve.TypeReserve,
             Promotion = reserve.Promotion,
@@ -53,11 +53,11 @@ public class ReserveController(AppDbContext context) : ControllerBase
         await _appDbContext.Reserve.AddAsync(addReserve);
         await _appDbContext.SaveChangesAsync();
 
-        return Ok(new { Message = "Um ADM aprovará sua solicitação." });
+        return Ok(new { Message = "Reserva criada com sucesso." });
     }
 
     [Authorize]
-    [HttpGet("/getReserve/arena/data")]
+    [HttpPost("/getReserve/arena/data")]
     async public Task<IActionResult> GetReservesWithData([FromBody] GetReservesArenaWithDatareserveModel reserve)
     {
         // Verifica se a dataReserve fornecida está no formato correto
@@ -92,9 +92,13 @@ public class ReserveController(AppDbContext context) : ControllerBase
                 result.Id_reserve,
                 result.DataReserve,
                 getSpace?.Name,
+                getSpace?.SpaceId,
                 result.TimeInitial,
                 result.TimeFinal,
                 result.Observation,
+                result.TypeReserve,
+                result.Promotion,
+                result.PromotionType,
                 getUser?.UserName,
                 getUser?.Phone,
                 getUser?.Role
@@ -124,4 +128,50 @@ public class ReserveController(AppDbContext context) : ControllerBase
         return Ok(existingReservation);
 
     }
+
+    [Authorize]
+    [HttpPost("/getReservesfixed")]
+    async public Task<IActionResult> GetReserveFixed([FromBody] GetReserveFixedWithArenaAndSpaceModel reserve)
+    {
+        var existingReservation = await _appDbContext.Reserve
+               .Where(r => r.ArenaId == reserve.ArenaId
+                   && r.SpaceId == reserve.SpaceId
+                   && r.TypeReserve == reserve.TypeReserve
+                   ).OrderBy(o => o.TimeInitial)
+                   .ToArrayAsync();
+        return Ok(existingReservation);
+
+    }
+
+    [Authorize]
+    [HttpDelete("/DeleteReserve-id")]
+    public async Task<IActionResult> DeleteAllReserveWithId([FromBody] GetAndDeleteReserveeModel reserve)
+    {
+        // Verifique se a observação foi passada no modelo
+        if (string.IsNullOrEmpty(reserve?.Observation))
+        {
+            return BadRequest("Observation is required.");
+        }
+
+        // Encontrar todas as reservas com a observação fornecida
+        var reservationsToDelete = await _appDbContext.Reserve
+            .Where(r => r.Observation == reserve.Observation) // Supondo que o campo se chama Observation
+            .ToListAsync();
+
+        // Verifique se existem reservas para deletar
+        if (reservationsToDelete.Count == 0)
+        {
+            return BadRequest("Reserva não encontrada.");
+        }
+
+        // Remover todas as reservas encontradas
+        _appDbContext.Reserve.RemoveRange(reservationsToDelete);
+
+        // Salvar as mudanças no banco de dados
+        await _appDbContext.SaveChangesAsync();
+
+        // Retornar uma resposta de sucesso
+        return Ok($"Reservas fixas - '{reserve.Observation}' deletadas.");
+    }
+
 }
