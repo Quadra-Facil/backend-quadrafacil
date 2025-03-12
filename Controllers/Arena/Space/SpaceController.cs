@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuadraFacil_backend.API.Data;
@@ -114,6 +115,18 @@ public class SpaceController(AppDbContext context) : ControllerBase
 
         return Ok(filteredSpaces);
     }
+
+    [Authorize]
+    [HttpPost("search/space/id")]
+    public async Task<IActionResult> GetSpaceWithId([FromBody] GetSpaceWithIdModel space)
+    {
+        var spaces = await _appDbContext.Spaces
+           .Where(s => s.ArenaId == space.ArenaId && s.SpaceId == space.SpaceId) // Filtro apenas pelo ArenaId
+           .ToListAsync();  // Carrega os dados para memória
+
+        return Ok(spaces);
+    }
+
 
 
 

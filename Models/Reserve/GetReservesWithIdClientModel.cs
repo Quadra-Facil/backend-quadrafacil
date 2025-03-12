@@ -2,17 +2,14 @@
 
 namespace QuadraFacil_backend.Models.Reserve;
 
-public class GetReservesWithDateAndSpaceModel
+public class GetReservesWithIdClientModel
 {
 
     [Required]
-    public int ArenaId { get; set; }
-
-    [Required]
-    public int SpaceId { get; set; }
+    public int ClientId { get; set; }
 
     [Required]
     [DataType(DataType.Date)]
     public DateTime? DataReserve { get; set; }
-
+    // public ICollection<ReserveModel>? Reserve { get; set; }
 }

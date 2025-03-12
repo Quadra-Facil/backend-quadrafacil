@@ -130,6 +130,22 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
+    [HttpPost("/getReserves/client")]
+    async public Task<IActionResult> GetReservesClient([FromBody] GetReservesWithIdClientModel reserve)
+    {
+        var existingReservation = await _appDbContext.Reserve
+     .Where(r => r.UserId == reserve.ClientId && r.DataReserve == reserve.DataReserve)
+     .ToListAsync();
+
+        if (!existingReservation.Any())
+        {
+            return BadRequest("Nenhuma reserva encontrada.");
+        }
+
+        return Ok(existingReservation);
+    }
+
+    [Authorize]
     [HttpPost("/getReservesfixed")]
     async public Task<IActionResult> GetReserveFixed([FromBody] GetReserveFixedWithArenaAndSpaceModel reserve)
     {
