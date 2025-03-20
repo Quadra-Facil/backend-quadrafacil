@@ -70,6 +70,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
 
         var getReservesWithArena = await _appDbContext.Reserve
             .Where(r => r.ArenaId == reserve.ArenaId && r.DataReserve == reserve.DataReserve)
+            .OrderBy(o => o.TimeInitial)
             .ToListAsync();
 
         var arenaData = new
