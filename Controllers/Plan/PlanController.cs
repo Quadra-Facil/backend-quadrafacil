@@ -34,7 +34,7 @@ namespace backend_quadrafacil.Controllers.Plan
             // PLANO DE TESTE (30 DIAS)
             if (plan.PlanSelect == "teste")
             {
-                var planTestExpire = dateNow.AddDays(30);
+                var planTestExpire = dateNow.AddDays(15);
 
                 newPlan = new PlanModel
                 {

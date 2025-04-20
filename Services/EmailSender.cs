@@ -76,10 +76,14 @@ namespace QuadraFacil_backend.Services
                                 margin: 10px 0;
                             }}
 
+                            .content p a{{
+                                color: white
+                            }}
+
                             .btn {{
                                 display: inline-block;
                                 background-color: #FF8A5B;
-                                color: #ffffff;
+                                color: #fff !important;
                                 padding: 12px 20px;
                                 font-size: 16px;
                                 text-decoration: none;
@@ -106,7 +110,7 @@ namespace QuadraFacil_backend.Services
                                 <h1>Recuperação de Senha</h1>
                             </div>
                             <div class='content'>
-                                <p>Olá, {nomeUsuario},</p>
+                                <p>Olá,</p>
                                 <p>Recebemos uma solicitação para a recuperação de sua senha. Se você não foi quem solicitou, por favor, ignore este e-mail.</p>
                                 <p>Caso tenha feito a solicitação, clique no botão abaixo para criar uma nova senha:</p>
                                 <p><a href='{linkRecuperacao}' class='btn'>Recuperar Senha</a></p>
@@ -129,7 +133,7 @@ namespace QuadraFacil_backend.Services
             try
             {
                 // conectar com STARTTLS (o Gmail exige STARTTLS na porta 587)
-                await client.ConnectAsync(_smtpServer, _smtpPort, SecureSocketOptions.StartTls); 
+                await client.ConnectAsync(_smtpServer, _smtpPort, SecureSocketOptions.StartTls);
                 await client.AuthenticateAsync(_smtpUser, _smtpPassword);
                 await client.SendAsync(emailMessage);
             }

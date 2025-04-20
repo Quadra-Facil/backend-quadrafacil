@@ -191,4 +191,47 @@ public class ReserveController(AppDbContext context) : ControllerBase
         return Ok($"Reservas fixas - '{reserve.Observation}' deletadas.");
     }
 
+    [Authorize]
+    [HttpDelete("/delete-reserve-id")]
+    public async Task<IActionResult> DeleteReserveId([FromBody] DeleteReserveWithModel reserve)
+    {
+        // Verifique se a observação foi passada no modelo
+        if (reserve?.reserveId == null)
+        {
+            return BadRequest("Id é obrigatório.");
+        }
+
+        // Encontrar todas as reservas com a observação fornecida
+        var reservationsToDelete = await _appDbContext.Reserve
+            .Where(r => r.Id_reserve == reserve.reserveId) // Supondo que o campo se chama Observation
+            .ToListAsync();
+
+        // Verifique se existem reservas para deletar
+        if (reservationsToDelete.Count == 0)
+        {
+            return BadRequest("Reserva não encontrada.");
+        }
+
+        // Remover todas as reservas encontradas
+        _appDbContext.Reserve.RemoveRange(reservationsToDelete);
+
+        // Salvar as mudanças no banco de dados
+        await _appDbContext.SaveChangesAsync();
+
+        // Retornar uma resposta de sucesso
+        return Ok($"Reserva cancelada.");
+    }
+
+    [Authorize]
+    [HttpPost("/getReserves/arena")]
+    async public Task<IActionResult> GetReservesArena([FromBody] GetReservesWithArenaModel reserve)
+    {
+        var existingReservation = await _appDbContext.Reserve
+               .Where(r => r.ArenaId == reserve.ArenaId
+                   ).OrderBy(o => o.DataReserve)
+                   .ToArrayAsync();
+        return Ok(existingReservation);
+
+    }
+
 }
