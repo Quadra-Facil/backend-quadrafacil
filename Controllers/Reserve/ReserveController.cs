@@ -8,7 +8,8 @@ using QuadraFacil_backend.Models.Reserve;
 namespace QuadraFacil_backend.Controllers.Reserve;
 
 [ApiController]
-[Route("/api/reserve")]
+ [Route("/api/reserve")]
+//[Route("api/reserve")]
 public class ReserveController(AppDbContext context) : ControllerBase
 {
     private readonly AppDbContext _appDbContext = context;
@@ -57,7 +58,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("/getReserve/arena/data")]
+    [HttpPost("getReserve/arena/data")]
     async public Task<IActionResult> GetReservesWithData([FromBody] GetReservesArenaWithDatareserveModel reserve)
     {
         // Verifica se a dataReserve fornecida está no formato correto
@@ -117,7 +118,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("/getReserves/date")]
+    [HttpPost("getReserves/date")]
     async public Task<IActionResult> GetReservesDateSpace([FromBody] GetReservesWithDateAndSpaceModel reserve)
     {
         var existingReservation = await _appDbContext.Reserve
@@ -131,7 +132,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("/getReserves/client")]
+    [HttpPost("getReserves/client")]
     async public Task<IActionResult> GetReservesClient([FromBody] GetReservesWithIdClientModel reserve)
     {
         var existingReservation = await _appDbContext.Reserve
@@ -147,7 +148,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("/getReservesfixed")]
+    [HttpPost("getReservesfixed")]
     async public Task<IActionResult> GetReserveFixed([FromBody] GetReserveFixedWithArenaAndSpaceModel reserve)
     {
         var existingReservation = await _appDbContext.Reserve
@@ -161,7 +162,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("/DeleteReserve-id")]
+    [HttpDelete("DeleteReserve-id")]
     public async Task<IActionResult> DeleteAllReserveWithId([FromBody] GetAndDeleteReserveeModel reserve)
     {
         // Verifique se a observação foi passada no modelo
@@ -192,7 +193,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("/delete-reserve-id")]
+    [HttpDelete("delete-reserve-id")]
     public async Task<IActionResult> DeleteReserveId([FromBody] DeleteReserveWithModel reserve)
     {
         // Verifique se a observação foi passada no modelo
@@ -223,7 +224,7 @@ public class ReserveController(AppDbContext context) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("/getReserves/arena")]
+    [HttpPost("getReserves/arena")]
     async public Task<IActionResult> GetReservesArena([FromBody] GetReservesWithArenaModel reserve)
     {
         var existingReservation = await _appDbContext.Reserve

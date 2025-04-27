@@ -86,11 +86,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsQuadraFacil", policy =>
     {
-        // Adicione as URLs que você quer permitir que acessem a API
-        policy.WithOrigins("http://localhost:5173") // Exemplo: URL do front-end (Angular, React, etc)
-              .AllowAnyHeader()   // Permite qualquer cabeçalho
-              .AllowAnyMethod()   // Permite qualquer método HTTP (GET, POST, PUT, DELETE)
-              .AllowCredentials(); // Permite o envio de credenciais como cookies e cabeçalhos de autenticação
+        // Combine todas as origens em uma única política
+        policy.WithOrigins(
+                "https://www.agendamento.appquadrafacil.com.br",
+                "https://agendamento.appquadrafacil.com.br",
+                "http://localhost:5173"
+              )
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -104,6 +108,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting(); // Adicione esta linha se não estiver presente
 
 // Aplique o middleware de CORS antes do middleware de autenticação e autorização
 app.UseCors("CorsQuadraFacil");
