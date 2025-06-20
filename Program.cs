@@ -8,26 +8,21 @@ using QuadraFacil_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração do DbContext com a string de conexão
+// Configuração do DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Adiciona controladores com configurações JSON
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-});
+// Adiciona controladores
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
 
-// Adiciona serviços ao contêiner
-builder.Services.AddControllers();
+// Configuração de serviços
 builder.Services.AddEndpointsApiExplorer();
-
-// Registra o TokenService no DI
-builder.Services.AddScoped<TokenService>(); // Registre o TokenService
-
-// Configuração do Swagger para autenticação via Token JWT
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -57,8 +52,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Configuração de autenticação JWT
-var jwtSettings = builder.Configuration.GetSection("Jwt"); // Variável que busca no appsettings.json
+// Registro de serviços
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmailServiceLembrete, EmailServiceLembrete>();
+
+// Configuração JWT
+var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 
 builder.Services.AddAuthentication(x =>
@@ -78,15 +78,11 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-// Registrar o serviço de e-mail
-builder.Services.AddTransient<IEmailService, EmailService>();
-
-// Configuração do CORS
+// Configuração CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsQuadraFacil", policy =>
     {
-        // Combine todas as origens em uma única política
         policy.WithOrigins(
                 "https://www.agendamento.appquadrafacil.com.br",
                 "https://agendamento.appquadrafacil.com.br",
@@ -100,7 +96,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configuração do pipeline de requisição HTTP
+// Configuração do pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -108,14 +104,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting(); // Adicione esta linha se não estiver presente
-
-// Aplique o middleware de CORS antes do middleware de autenticação e autorização
+app.UseRouting();
 app.UseCors("CorsQuadraFacil");
-
-// Middleware de autenticação e autorização devem ser aplicados após o CORS
-app.UseAuthentication();  // Registra o middleware de autenticação
-app.UseAuthorization();   // Registra o middleware de autorização
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

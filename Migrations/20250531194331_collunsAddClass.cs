@@ -5,15 +5,15 @@
 namespace QuadraFacil_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class collunopen : Migration
+    public partial class collunsAddClass : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Open",
-                table: "ArenaHours",
-                type: "bit",
+            migrationBuilder.AddColumn<int>(
+                name: "ArenaId",
+                table: "ClassArena",
+                type: "int",
                 nullable: true);
         }
 
@@ -21,8 +21,8 @@ namespace QuadraFacil_backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Open",
-                table: "ArenaHours");
+                name: "ArenaId",
+                table: "ClassArena");
         }
     }
 }

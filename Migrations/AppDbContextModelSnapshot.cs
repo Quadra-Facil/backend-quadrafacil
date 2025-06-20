@@ -157,6 +157,35 @@ namespace QuadraFacil_backend.Migrations
                     b.ToTable("Spaces");
                 });
 
+            modelBuilder.Entity("QuadraFacil_backend.Models.ClassArena.ClassArenaModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreateClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameClass")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneTeacher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Teacher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClassArena");
+                });
+
             modelBuilder.Entity("QuadraFacil_backend.Models.Reserve.ReserveModel", b =>
                 {
                     b.Property<int>("Id_reserve")
@@ -217,12 +246,22 @@ namespace QuadraFacil_backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AmountPaid")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ArenaId")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClassId")
                         .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpiredDate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -233,9 +272,18 @@ namespace QuadraFacil_backend.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Recurrence")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegistrationDate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Role")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("StatusPaid")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -338,6 +386,31 @@ namespace QuadraFacil_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Promotions");
+                });
+
+            modelBuilder.Entity("backend_quadrafacil.Models.PushSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Auth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Endpoint")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("P256DH")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PushSubscriptions");
                 });
 
             modelBuilder.Entity("QuadraFacil_backend.Models.Arena.AdressArena", b =>

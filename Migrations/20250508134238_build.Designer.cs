@@ -12,8 +12,8 @@ using QuadraFacil_backend.API.Data;
 namespace QuadraFacil_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250422010558_uptablesdbhostcloud")]
-    partial class uptablesdbhostcloud
+    [Migration("20250508134238_build")]
+    partial class build
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

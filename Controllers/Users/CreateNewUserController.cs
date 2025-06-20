@@ -130,6 +130,120 @@ public class Users : ControllerBase
     }
 
     [Authorize]
+    [HttpPut("edit/client")]
+    public async Task<IActionResult> EditCliet([FromBody] EditClientModel user)
+    {
+        var userFind = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == user.UserId);
+        if (userFind == null)
+        {
+            return NotFound("Usuário não encontrado");
+        }
+
+        userFind.AmountPaid = user.AmountPaid;
+        userFind.ClassId = user.ClassId;
+        userFind.ExpiredDate = user.ExpireDate;
+        userFind.Recurrence = user.Recurrence;
+        userFind.RegistrationDate = user.RegistrationDate;
+        userFind.StatusPaid = user.StatusPaid;
+        userFind.ArenaId = user.ArenaId;
+
+
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Cliente/Associado registrado."
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao vincular cliente.");
+        }
+    }
+
+    [Authorize]
+    [HttpPut("edit/payment")]
+    public async Task<IActionResult> PaymentRegister([FromBody] PaymentUserDto user)
+    {
+        var userFind = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == user.UserId);
+        if (userFind == null)
+        {
+            return NotFound("Usuário não encontrado");
+        }
+
+        // Verifica se a data de expiração existe e é válida
+        DateTime expirationDate;
+        if (string.IsNullOrEmpty(userFind.ExpiredDate) || !DateTime.TryParse(userFind.ExpiredDate, out expirationDate))
+        {
+            expirationDate = DateTime.Now; // Usa a data atual se não houver data válida
+        }
+
+        switch (userFind.Recurrence)
+        {
+            case "Mensal":
+                expirationDate = expirationDate.AddMonths(1);
+                break;
+            case "Trimestral":
+                expirationDate = expirationDate.AddMonths(3);
+                break;
+            case "Semestral":
+                expirationDate = expirationDate.AddMonths(6);
+                break;
+            case "Anual":
+                expirationDate = expirationDate.AddYears(1);
+                break;
+            default:
+                return BadRequest("Tipo de recorrência inválido");
+        }
+
+        // Atualiza a data no formato de string
+        userFind.ExpiredDate = expirationDate.ToString("yyyy-MM-dd"); // ou o formato que você usa
+
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new
+            {
+                Message = "Renovação adicionada.",
+                NewExpirationDate = userFind.ExpiredDate
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao renovar plano de usuário.");
+        }
+    }
+
+    [Authorize]
+    [HttpGet("allclients")]
+    public async Task<IActionResult> GetAllClients([FromQuery] int arenaId, string role)
+    {
+        var clientsFind = await _appDbContext.Users
+            .Where(c => c.ArenaId == arenaId && c.Role == role)
+            .Select(u => new
+            {
+                u.Id,
+                u.UserName,
+                u.Email,
+                u.Phone,
+                u.RegistrationDate,
+                u.Recurrence,
+                u.ExpiredDate,
+                u.AmountPaid,
+                u.Role,
+                u.StatusPaid,
+                u.ClassId // Garanta que esta propriedade está sendo incluída
+            })
+            .ToListAsync();
+
+        return Ok(new
+        {
+            clients = clientsFind
+        });
+    }
+
+    [Authorize]
     [HttpGet("getUsers")]
     async public Task<IActionResult> GetAllUser()
     {
@@ -150,10 +264,8 @@ public class Users : ControllerBase
 
         });
     }
-
-
-
-
-
-
+    public class PaymentUserDto
+    {
+        public int UserId { get; set; }
+    }
 }

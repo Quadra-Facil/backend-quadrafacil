@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "UPm4U+83N+sTuUD/H6l+rr1qJ4ygqXhmFctu8hlc1gs=",
-  "Source": "QuadraFacil-backend",
-  "BasePath": "_content/QuadraFacil-backend",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"RkHyjldoptkJYWnFhBN2bSaLtrmTy/0N81io1zVBXsw=","Source":"QuadraFacil-backend","BasePath":"_content/QuadraFacil-backend","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

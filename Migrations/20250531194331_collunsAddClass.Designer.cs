@@ -12,8 +12,8 @@ using QuadraFacil_backend.API.Data;
 namespace QuadraFacil_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250130155008_collun-open")]
-    partial class collunopen
+    [Migration("20250531194331_collunsAddClass")]
+    partial class collunsAddClass
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,9 +204,41 @@ namespace QuadraFacil_backend.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Value")
+                        .HasColumnType("int");
+
                     b.HasKey("Id_reserve");
 
                     b.ToTable("Reserve");
+                });
+
+            modelBuilder.Entity("QuadraFacil_backend.Models.Users.ClassArena", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ArenaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreateClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameClass")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneTeacher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Teacher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClassArena");
                 });
 
             modelBuilder.Entity("QuadraFacil_backend.Models.Users.User", b =>
@@ -217,12 +249,22 @@ namespace QuadraFacil_backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AmountPaid")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ArenaId")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClassId")
                         .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpiredDate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -233,9 +275,18 @@ namespace QuadraFacil_backend.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Recurrence")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegistrationDate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Role")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("StatusPaid")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -313,19 +364,27 @@ namespace QuadraFacil_backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("EndDate")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PromotionType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("QtdPeople")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("StartDate")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Value")
                         .HasColumnType("int");
+
+                    b.Property<string>("WeekDays")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("When")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

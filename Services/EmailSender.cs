@@ -119,7 +119,7 @@ namespace QuadraFacil_backend.Services
                             <div class='footer'>
                                 <p>Atenciosamente,</p>
                                 <p><strong>Equipe Quadra Fácil</strong></p>
-                                <p><a href='https://w.app/quadrafacilatendimento'>Central de Suporte</a></p>
+                                <p><a href='https://api.whatsapp.com/send/?phone=5511993536138&text=Ol%C3%A1,%2520tenho%2520uma%2520d%C3%BAvida%2520sobre%2520o%2520pagamento%2520da%2520minha%2520associa%C3%A7%C3%A3o/aula.%2520Podem%2520me%2520ajudar?&type=phone_number&app_absent=0'>Central de Suporte</a></p>
                             </div>
                         </div>
                     </body>

@@ -1,9 +1,11 @@
-﻿using backend_quadrafacil.Models.Plan;
+﻿using backend_quadrafacil.Models;
+using backend_quadrafacil.Models.Plan;
 using backend_quadrafacil.Models.PlanModel;
 using backend_quadrafacil.Models.Promotion;
 using Microsoft.EntityFrameworkCore;
 using QuadraFacil_backend.Models.Arena;
 using QuadraFacil_backend.Models.Arena.Space;
+using QuadraFacil_backend.Models.ClassArena;
 using QuadraFacil_backend.Models.Reserve;
 using QuadraFacil_backend.Models.Users;
 
@@ -28,7 +30,9 @@ namespace QuadraFacil_backend.API.Data
 
         public DbSet<ArenaHoursModel> ArenaHours { get; set; }
 
+        public DbSet<ClassArenaModel> ClassArena { get; set; }
 
+        public DbSet<PushSubscriptionModel> PushSubscriptions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

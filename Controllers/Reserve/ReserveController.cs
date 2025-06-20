@@ -8,7 +8,7 @@ using QuadraFacil_backend.Models.Reserve;
 namespace QuadraFacil_backend.Controllers.Reserve;
 
 [ApiController]
- [Route("/api/reserve")]
+[Route("/api/reserve")]
 //[Route("api/reserve")]
 public class ReserveController(AppDbContext context) : ControllerBase
 {

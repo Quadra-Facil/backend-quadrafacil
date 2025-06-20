@@ -1,30 +1,29 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace QuadraFacil_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class arenahours : Migration
+    public partial class AddPushSubscription : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ArenaHours",
+                name: "PushSubscriptions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ArenaId = table.Column<int>(type: "int", nullable: false),
-                    WeekDays = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false)
+                    Endpoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    P256DH = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Auth = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AlunoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArenaHours", x => x.Id);
+                    table.PrimaryKey("PK_PushSubscriptions", x => x.Id);
                 });
         }
 
@@ -32,7 +31,7 @@ namespace QuadraFacil_backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ArenaHours");
+                name: "PushSubscriptions");
         }
     }
 }

@@ -25,11 +25,23 @@ public class User
     [Phone]
     public string? Phone { get; set; }
 
+    public string? RegistrationDate { get; set; }
+
+    public string? Recurrence { get; set; }
+    public string? ExpiredDate { get; set; }
+    public string? AmountPaid { get; set; }
+
+
     [MaxLength(100)]
-    public string? Role { get; set; }    
-    
+    public string? Role { get; set; }
+
     [MaxLength(10)]
     [JsonIgnore]
     public int? ArenaId { get; set; }
 
+    [MaxLength(10)]
+    [JsonIgnore]
+    public int? ClassId { get; set; }
+
+    public string? StatusPaid { get; set; }
 }
